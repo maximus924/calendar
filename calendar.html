@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>點字學習學生通用日曆學習札記 小麥麥</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --panel-2: #eef3ff;
+      --text: #1f2937;
+      --muted: #5f6b7a;
+      --border: #cfd8e3;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #7c3aed;
+      --success: #047857;
+      --danger: #b91c1c;
+      --warning: #b45309;
+      --focus: #f59e0b;
+      --today: #dbeafe;
+      --selected: #fef3c7;
+      --holiday: #fee2e2;
+      --note: #dcfce7;
+      --shadow: 0 10px 28px rgba(15, 23, 42, .10);
+    }
+
+    body[data-theme="dark"] {
+      --bg: #0a0f1e;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --border: #334155;
+      --primary: #60a5fa;
+      --primary-dark: #3b82f6;
+      --accent: #c084fc;
+      --success: #34d399;
+      --danger: #fb7185;
+      --warning: #fbbf24;
+      --focus: #facc15;
+      --today: #1e3a8a;
+      --selected: #713f12;
+      --holiday: #7f1d1d;
+      --note: #064e3b;
+      --shadow: 0 10px 28px rgba(0, 0, 0, .35);
+    }
+
+    body[data-theme="yellow"] {
+      --bg: #000;
+      --panel: #000;
+      --panel-2: #111;
+      --text: #ff0;
+      --muted: #ffff99;
+      --border: #ff0;
+      --primary: #ff0;
+      --primary-dark: #ffff66;
+      --accent: #ff0;
+      --success: #0f0;
+      --danger: #ff8080;
+      --warning: #ff0;
+      --focus: #fff;
+      --today: #222200;
+      --selected: #333300;
+      --holiday: #330000;
+      --note: #003300;
+      --shadow: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a, button, input, textarea, select { font: inherit; }
+
+    a:focus, button:focus, input:focus, textarea:focus, select:focus, [tabindex]:focus {
+      outline: 4px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0);
+      white-space: nowrap; border: 0;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 0;
+      top: -64px;
+      z-index: 1000;
+      padding: 12px 18px;
+      background: var(--focus);
+      color: #000;
+      font-weight: 800;
+      text-decoration: none;
+      border-radius: 0 0 10px 0;
+    }
+    .skip-link:focus { top: 0; }
+
+    header {
+      background: var(--panel);
+      border-bottom: 2px solid var(--border);
+      padding: 18px clamp(16px, 4vw, 32px);
+      box-shadow: var(--shadow);
+    }
+
+    .header-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      color: var(--primary);
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .theme-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px clamp(12px, 3vw, 24px) 28px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 390px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .card h2, .card h3 { margin-top: 0; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    button, .button-like {
+      border: 2px solid transparent;
+      border-radius: 12px;
+      min-height: 44px;
+      padding: 9px 14px;
+      background: var(--primary);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    button:hover { filter: brightness(1.08); }
+    button.secondary { background: #475569; color: #fff; }
+    button.success { background: var(--success); color: #fff; }
+    button.warning { background: var(--warning); color: #fff; }
+    button.danger { background: var(--danger); color: #fff; }
+    button.light { background: var(--panel-2); color: var(--text); border-color: var(--border); }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    label { display: block; font-weight: 800; margin: 10px 0 6px; }
+    textarea { resize: vertical; line-height: 1.7; min-height: 120px; }
+    .hint { color: var(--muted); font-size: .95rem; margin: 6px 0; }
+    .status { color: var(--success); font-weight: 800; min-height: 28px; }
+
+    .date-summary {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin: 12px 0;
+      font-weight: 700;
+    }
+    .date-summary strong { display: block; font-size: 1.25rem; color: var(--primary); }
+
+    .calendar-head {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-weight: 900;
+      color: var(--muted);
+      padding: 4px 2px;
+    }
+
+    #calendarGrid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .day-button {
+      width: 100%;
+      min-height: 74px;
+      padding: 6px;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 1px;
+      font-weight: 700;
+      text-align: left;
+    }
+    .day-button:hover { background: var(--panel-2); }
+    .day-button[aria-current="date"] { border: 4px solid var(--primary); background: var(--today); }
+    .day-button.selected { border: 4px solid var(--focus); background: var(--selected); }
+    .day-button.other-month { opacity: .45; }
+    .day-button.holiday { background: var(--holiday); }
+    .day-button.has-note::after {
+      content: "有紀錄";
+      color: var(--success);
+      font-size: .72rem;
+      font-weight: 900;
+      margin-top: auto;
+    }
+    .solar-day { font-size: 1.12rem; font-weight: 900; }
+    .lunar-day, .holiday-name { font-size: .75rem; color: var(--muted); line-height: 1.25; }
+    .holiday-name { color: var(--danger); font-weight: 900; }
+
+    .entry-list { display: grid; gap: 12px; margin-top: 12px; }
+    .entry {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel-2);
+      padding: 12px;
+    }
+    .entry-header {
+      display: grid;
+      grid-template-columns: 110px 110px minmax(120px, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+    .entry textarea { background: var(--panel); margin-top: 10px; min-height: 110px; }
+
+    .preset-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .export-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .shortcut-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 6px 18px;
+      padding-left: 1.2rem;
+    }
+    kbd {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1px 6px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop[hidden] { display: none; }
+    .modal {
+      max-width: 520px;
+      width: 100%;
+      background: var(--panel);
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .entry-header { grid-template-columns: 1fr 1fr; }
+      .entry-header .delete-entry { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 520px) {
+      main { padding-left: 8px; padding-right: 8px; }
+      .card { padding: 12px; }
+      .day-button { min-height: 64px; font-size: .9rem; }
+      .entry-header { grid-template-columns: 1fr; }
+      .preset-row { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      header, .calendar-card, .no-print, .shortcut-card, .modal-backdrop { display: none !important; }
+      body { background: #fff; color: #000; }
+      main { max-width: none; padding: 0; }
+      .layout { display: block; }
+      .card { border: 0; box-shadow: none; padding: 0; }
+      textarea, input { border: 0; }
+      .entry { break-inside: avoid; background: #fff; border: 1px solid #999; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <a href="#entryTitle" class="skip-link">跳到今日學習紀錄編輯區</a>
+  <div id="liveRegion" class="visually-hidden" aria-live="polite" aria-atomic="true" role="status"></div>
+
+  <header>
+    <div class="header-row">
+      <div>
+        <h1>📅 點字學習學生通用日曆學習札記 小麥麥</h1>
+        <p class="subtitle">月曆選日、分時段記錄、自動儲存、TXT/PDF/Keep/Gmail 匯出，支援 NVDA 與鍵盤操作。</p>
+      </div>
+      <div class="theme-buttons no-print" role="group" aria-label="視覺主題切換">
+        <button type="button" class="light" data-theme-btn="light">亮色</button>
+        <button type="button" class="light" data-theme-btn="dark">深色</button>
+        <button type="button" class="light" data-theme-btn="yellow">黑底黃字</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <aside class="card calendar-card" aria-labelledby="calendarTitle">
+        <h2 id="calendarTitle">日期選擇</h2>
+        <div class="toolbar no-print" role="group" aria-label="日期與月份操作">
+          <button type="button" id="prevMonthBtn" class="secondary" aria-label="上一個月，快捷鍵 Alt 加 PageUp">上月</button>
+          <button type="button" id="prevDayBtn" class="secondary" aria-label="前一天，快捷鍵 Alt 加左方向鍵">前日</button>
+          <button type="button" id="todayBtn" aria-label="回到今天，快捷鍵 T">今天</button>
+          <button type="button" id="nextDayBtn" class="secondary" aria-label="後一天，快捷鍵 Alt 加右方向鍵">後日</button>
+          <button type="button" id="nextMonthBtn" class="secondary" aria-label="下一個月，快捷鍵 Alt 加 PageDown">下月</button>
+        </div>
+
+        <label for="jumpDate">跳選日期</label>
+        <input type="date" id="jumpDate" aria-describedby="jumpDateHint" />
+        <p id="jumpDateHint" class="hint">快捷鍵：按 <kbd>G</kbd> 跳到日期欄。選好日期後會自動切換。</p>
+
+        <div id="monthHeading" class="date-summary" aria-live="polite"></div>
+
+        <div class="calendar-head" aria-hidden="true">
+          <div class="weekday">日</div><div class="weekday">一</div><div class="weekday">二</div><div class="weekday">三</div><div class="weekday">四</div><div class="weekday">五</div><div class="weekday">六</div>
+        </div>
+        <div id="calendarGrid" role="grid" aria-label="月份日曆，可用方向鍵移動日期，Enter 選取日期"></div>
+      </aside>
+
+      <section class="card" aria-labelledby="entryTitle">
+        <h2 id="entryTitle" tabindex="-1">每日學習紀錄</h2>
+        <div id="selectedDateSummary" class="date-summary" aria-live="polite"></div>
+        <div id="saveStatus" class="status" role="status" aria-live="polite">資料會自動儲存在這台電腦的瀏覽器中。</div>
+
+        <form id="entryForm">
+          <label for="dayGoal">今日學習目標</label>
+          <textarea id="dayGoal" placeholder="例如：練習點字數學符號、閱讀國文課文、聽寫英文單字。" aria-describedby="autoSaveHint"></textarea>
+          <p id="autoSaveHint" class="hint">輸入後會自動儲存；按 <kbd>Ctrl</kbd> + <kbd>S</kbd> 可立即儲存。重新整理後資料仍會保留。</p>
+
+          <section class="card no-print" aria-labelledby="slotTitle" style="box-shadow:none;margin-top:14px;">
+            <h3 id="slotTitle">新增學習時段</h3>
+            <div class="preset-row">
+              <div>
+                <label for="presetSlot">常用時段</label>
+                <select id="presetSlot">
+                  <option value="">── 選擇常用時段 ──</option>
+                  <option value="07:00|08:00|早自習">07:00–08:00 早自習</option>
+                  <option value="08:10|09:00|第一節">08:10–09:00 第一節</option>
+                  <option value="09:10|10:00|第二節">09:10–10:00 第二節</option>
+                  <option value="10:20|11:10|第三節">10:20–11:10 第三節</option>
+                  <option value="11:20|12:10|第四節">11:20–12:10 第四節</option>
+                  <option value="12:10|13:00|午休">12:10–13:00 午休</option>
+                  <option value="13:10|14:00|第五節">13:10–14:00 第五節</option>
+                  <option value="14:10|15:00|第六節">14:10–15:00 第六節</option>
+                  <option value="15:20|16:10|第七節">15:20–16:10 第七節</option>
+                  <option value="16:20|17:10|第八節">16:20–17:10 第八節</option>
+                  <option value="17:10|18:00|課後輔導">17:10–18:00 課後輔導</option>
+                  <option value="19:00|21:00|晚自習">19:00–21:00 晚自習</option>
+                  <option value="00:00|23:59|全天記錄">全天記錄</option>
+                </select>
+              </div>
+              <button type="button" id="addPresetBtn" class="success">加入常用時段</button>
+            </div>
+
+            <div class="entry-header" style="margin-top:10px;">
+              <div><label for="customStart">開始</label><input id="customStart" type="time" value="08:00"></div>
+              <div><label for="customEnd">結束</label><input id="customEnd" type="time" value="09:00"></div>
+              <div><label for="customLabel">名稱</label><input id="customLabel" type="text" placeholder="例如：點字閱讀"></div>
+              <button type="button" id="addCustomBtn" class="success">加入自訂時段</button>
+            </div>
+          </section>
+
+          <div class="toolbar no-print" role="group" aria-label="紀錄操作" style="margin-top:12px;">
+            <button type="button" id="addBlankEntryBtn" class="success" aria-label="新增空白時段，快捷鍵 Ctrl 加 Shift 加 A">新增空白時段</button>
+            <button type="button" id="saveBtn" aria-label="立即儲存，快捷鍵 Ctrl 加 S">儲存</button>
+            <button type="button" id="clearBtn" class="danger" aria-label="清除本日紀錄">清除本日</button>
+          </div>
+
+          <div id="entryList" class="entry-list" aria-label="本日分時段學習紀錄"></div>
+        </form>
+
+        <section class="card no-print" aria-labelledby="exportTitle" style="box-shadow:none;margin-top:18px;">
+          <h3 id="exportTitle">輸出與分享</h3>
+          <label for="mailTo">Gmail 收件信箱（選填，可用逗號分隔）</label>
+          <input id="mailTo" type="text" placeholder="teacher@example.com" autocomplete="email">
+          <div class="export-grid" role="group" aria-label="輸出與分享功能" style="margin-top:10px;">
+            <button type="button" id="copyBtn">複製文字</button>
+            <button type="button" id="downloadTxtBtn">下載 TXT</button>
+            <button type="button" id="downloadJsonBtn" class="secondary">備份 JSON</button>
+            <button type="button" id="downloadPdfBtn" class="warning">下載 PDF</button>
+            <button type="button" id="openKeepBtn" class="light">Google Keep</button>
+            <button type="button" id="openGmailBtn" class="danger">Gmail 寄信</button>
+          </div>
+          <p class="hint">Keep 會先複製內容再開啟網頁；Gmail 會帶入主旨與內容。PDF 使用瀏覽器列印，最穩定也最容易保存。</p>
+        </section>
+      </section>
+    </div>
+
+    <section class="card shortcut-card no-print" aria-labelledby="shortcutTitle" style="margin-top:18px;">
+      <h2 id="shortcutTitle">鍵盤快捷鍵</h2>
+      <ul class="shortcut-list">
+        <li><kbd>T</kbd>：回到今天</li>
+        <li><kbd>G</kbd>：跳到日期輸入欄</li>
+        <li><kbd>Alt</kbd> + <kbd>←</kbd>：前一天</li>
+        <li><kbd>Alt</kbd> + <kbd>→</kbd>：後一天</li>
+        <li><kbd>Alt</kbd> + <kbd>PageUp</kbd>：上個月</li>
+        <li><kbd>Alt</kbd> + <kbd>PageDown</kbd>：下個月</li>
+        <li><kbd>Ctrl</kbd> + <kbd>S</kbd>：儲存</li>
+        <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd>：新增空白時段</li>
+        <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd>：下載 TXT</li>
+        <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>：下載 PDF</li>
+        <li><kbd>?</kbd>：開啟快捷鍵說明</li>
+      </ul>
+    </section>
+  </main>
+
+  <div id="helpModal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal">
+      <h2 id="helpTitle">快捷鍵與操作說明</h2>
+      <p>可使用 Tab 在控制項之間移動；在月曆日期上可用方向鍵移動日期，按 Enter 選取日期。輸入內容會自動儲存在本機瀏覽器。</p>
+      <ul>
+        <li>T：回到今天。</li>
+        <li>G：跳到日期輸入欄。</li>
+        <li>Alt + 左右方向鍵：前一天、後一天。</li>
+        <li>Ctrl + S：立即儲存。</li>
+        <li>Ctrl + Shift + A：新增空白時段。</li>
+      </ul>
+      <div class="toolbar" style="justify-content:flex-end;"><button type="button" id="closeHelpBtn">關閉</button></div>
+    </div>
+  </div>
+
+  <script>
+    'use strict';
+
+    const STORAGE_KEY = 'braille-learning-calendar-pro-v1';
+    const WEEKDAYS = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    const lunarMonthNames = ['', '正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '臘'];
+    const lunarDayNames = ['', '初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+    const gan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const zhi = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    const zodiac = ['鼠','牛','虎','兔','龍','蛇','馬','羊','猴','雞','狗','豬'];
+    const LUNAR_INFO = [
+      0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+      0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+      0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+      0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+      0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+      0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
+      0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+      0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+      0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+      0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06aa0,0x0a6b6,0x056a0,0x02b40,0x0d9e4,
+      0x0d950,0x05f52,0x0b540,0x0b6a0,0x196d6,0x095b0,0x049b0,0x0a953,0x0a4b0,0x0b4b0,
+      0x14b55,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052b3,0x04970,0x06566,0x0d4a0,
+      0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,
+      0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,
+      0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,
+      0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,
+      0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,
+      0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,
+      0x064b0,0x074a3,0x0ea50,0x06aa0,0x0a6b6,0x056a0,0x02b40,0x0d9e4,0x0d950,0x05f52,
+      0x0b540
+    ];
+
+    let selectedDate = startOfDay(new Date());
+    let displayYear = selectedDate.getFullYear();
+    let displayMonth = selectedDate.getMonth();
+    let saveTimer = null;
+
+    const el = {
+      live: document.getElementById('liveRegion'),
+      calendarGrid: document.getElementById('calendarGrid'),
+      monthHeading: document.getElementById('monthHeading'),
+      jumpDate: document.getElementById('jumpDate'),
+      selectedDateSummary: document.getElementById('selectedDateSummary'),
+      saveStatus: document.getElementById('saveStatus'),
+      dayGoal: document.getElementById('dayGoal'),
+      entryList: document.getElementById('entryList'),
+      presetSlot: document.getElementById('presetSlot'),
+      customStart: document.getElementById('customStart'),
+      customEnd: document.getElementById('customEnd'),
+      customLabel: document.getElementById('customLabel'),
+      mailTo: document.getElementById('mailTo'),
+      helpModal: document.getElementById('helpModal')
+    };
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    function init() {
+      bindEvents();
+      el.jumpDate.value = dateKeyFromDate(selectedDate);
+      renderCalendar();
+      loadSelectedDate();
+      updateStatus('已開啟今天日期。資料會自動儲存。', true);
+    }
+
+    function bindEvents() {
+      document.querySelectorAll('[data-theme-btn]').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeBtn)));
+      document.getElementById('prevMonthBtn').addEventListener('click', () => changeMonth(-1));
+      document.getElementById('nextMonthBtn').addEventListener('click', () => changeMonth(1));
+      document.getElementById('prevDayBtn').addEventListener('click', () => moveDay(-1));
+      document.getElementById('nextDayBtn').addEventListener('click', () => moveDay(1));
+      document.getElementById('todayBtn').addEventListener('click', goToday);
+      document.getElementById('addPresetBtn').addEventListener('click', addPresetEntry);
+      document.getElementById('addCustomBtn').addEventListener('click', addCustomEntry);
+      document.getElementById('addBlankEntryBtn').addEventListener('click', () => addEntry({ focus: true }));
+      document.getElementById('saveBtn').addEventListener('click', saveSelectedDate);
+      document.getElementById('clearBtn').addEventListener('click', clearSelectedDate);
+      document.getElementById('copyBtn').addEventListener('click', copyText);
+      document.getElementById('downloadTxtBtn').addEventListener('click', downloadTextFile);
+      document.getElementById('downloadJsonBtn').addEventListener('click', downloadJsonBackup);
+      document.getElementById('downloadPdfBtn').addEventListener('click', downloadPdf);
+      document.getElementById('openKeepBtn').addEventListener('click', openGoogleKeep);
+      document.getElementById('openGmailBtn').addEventListener('click', openGmail);
+      document.getElementById('closeHelpBtn').addEventListener('click', closeHelp);
+
+      el.jumpDate.addEventListener('change', () => {
+        if (el.jumpDate.value) selectDate(parseDateKey(el.jumpDate.value), true);
+      });
+      el.dayGoal.addEventListener('input', scheduleAutoSave);
+      el.entryList.addEventListener('input', scheduleAutoSave);
+      el.entryList.addEventListener('click', event => {
+        const btn = event.target.closest('[data-delete-entry]');
+        if (!btn) return;
+        const entry = btn.closest('.entry');
+        const label = entry?.querySelector('[data-entry-label]')?.value || '此時段';
+        if (confirm(`確定刪除「${label}」嗎？`)) {
+          entry.remove();
+          updateEntryLabels();
+          scheduleAutoSave();
+          announce(`已刪除${label}`);
+        }
+      });
+      el.calendarGrid.addEventListener('click', event => {
+        const btn = event.target.closest('.day-button');
+        if (btn) selectDate(parseDateKey(btn.dataset.date), false);
+      });
+      el.calendarGrid.addEventListener('keydown', handleCalendarKeydown);
+      document.addEventListener('keydown', handleShortcuts);
+      window.addEventListener('beforeunload', saveSelectedDate);
+    }
+
+    function announce(message) {
+      el.live.textContent = '';
+      setTimeout(() => { el.live.textContent = message; }, 20);
+    }
+
+    function setTheme(themeName) {
+      document.body.dataset.theme = themeName;
+      announce(`已切換為${themeName === 'dark' ? '深色' : themeName === 'yellow' ? '黑底黃字' : '亮色'}主題`);
+    }
+
+    function handleShortcuts(event) {
+      const tag = document.activeElement?.tagName?.toLowerCase();
+      const typing = ['input', 'textarea', 'select'].includes(tag);
+      if (event.key === '?' && !typing) { event.preventDefault(); openHelp(); return; }
+      if (event.key.toLowerCase() === 't' && !typing) { event.preventDefault(); goToday(); return; }
+      if (event.key.toLowerCase() === 'g' && !typing) { event.preventDefault(); el.jumpDate.focus(); announce('已跳到日期輸入欄'); return; }
+      if (event.altKey && event.key === 'ArrowLeft') { event.preventDefault(); moveDay(-1); return; }
+      if (event.altKey && event.key === 'ArrowRight') { event.preventDefault(); moveDay(1); return; }
+      if (event.altKey && event.key === 'PageUp') { event.preventDefault(); changeMonth(-1); return; }
+      if (event.altKey && event.key === 'PageDown') { event.preventDefault(); changeMonth(1); return; }
+      if (event.ctrlKey && !event.shiftKey && event.key.toLowerCase() === 's') { event.preventDefault(); saveSelectedDate(); return; }
+      if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'a') { event.preventDefault(); addEntry({ focus: true }); return; }
+      if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 't') { event.preventDefault(); downloadTextFile(); return; }
+      if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'p') { event.preventDefault(); downloadPdf(); return; }
+      if (event.key === 'Escape' && !el.helpModal.hidden) closeHelp();
+    }
+
+    function handleCalendarKeydown(event) {
+      const btn = event.target.closest('.day-button');
+      if (!btn) return;
+      let delta = 0;
+      if (event.key === 'ArrowLeft') delta = -1;
+      if (event.key === 'ArrowRight') delta = 1;
+      if (event.key === 'ArrowUp') delta = -7;
+      if (event.key === 'ArrowDown') delta = 7;
+      if (event.key === 'Home') delta = -new Date(btn.dataset.date + 'T00:00:00').getDay();
+      if (event.key === 'End') delta = 6 - new Date(btn.dataset.date + 'T00:00:00').getDay();
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectDate(parseDateKey(btn.dataset.date), false); return; }
+      if (delta !== 0) {
+        event.preventDefault();
+        const next = addDays(parseDateKey(btn.dataset.date), delta);
+        selectDate(next, true, true);
+      }
+    }
+
+    function renderCalendar(focusSelected = false) {
+      const data = getAllData();
+      const first = new Date(displayYear, displayMonth, 1);
+      const start = addDays(first, -first.getDay());
+      const monthText = `${displayYear} 年 ${displayMonth + 1} 月`;
+      const lunar = safeLunar(first);
+      el.monthHeading.innerHTML = `<strong>${monthText}</strong><span>本月起始農曆：${lunar.full}</span>`;
+      el.calendarGrid.innerHTML = '';
+
+      for (let i = 0; i < 42; i++) {
+        const date = addDays(start, i);
+        const key = dateKeyFromDate(date);
+        const lunarInfo = safeLunar(date);
+        const holiday = getHolidayName(date, lunarInfo);
+        const hasNote = Boolean(data[key] && ((data[key].goal || '').trim() || (data[key].entries || []).some(e => (e.text || '').trim() || (e.label || '').trim())));
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'day-button';
+        button.dataset.date = key;
+        if (date.getMonth() !== displayMonth) button.classList.add('other-month');
+        if (isSameDate(date, new Date())) button.setAttribute('aria-current', 'date');
+        if (isSameDate(date, selectedDate)) button.classList.add('selected');
+        if (holiday) button.classList.add('holiday');
+        if (hasNote) button.classList.add('has-note');
+        button.setAttribute('role', 'gridcell');
+        button.setAttribute('aria-selected', isSameDate(date, selectedDate) ? 'true' : 'false');
+        button.setAttribute('aria-label', buildDateAriaLabel(date, lunarInfo, holiday, hasNote));
+        button.innerHTML = `<span class="solar-day">${date.getDate()}</span><span class="lunar-day">${escapeHtml(lunarInfo.short)}</span>${holiday ? `<span class="holiday-name">${escapeHtml(holiday)}</span>` : ''}`;
+        el.calendarGrid.appendChild(button);
+      }
+
+      if (focusSelected) {
+        const selectedBtn = el.calendarGrid.querySelector(`[data-date="${dateKeyFromDate(selectedDate)}"]`);
+        if (selectedBtn) selectedBtn.focus();
+      }
+    }
+
+    function buildDateAriaLabel(date, lunar, holiday, hasNote) {
+      const parts = [formatDateForSpeech(date), lunar.full];
+      if (holiday) parts.push(holiday);
+      if (hasNote) parts.push('有學習紀錄');
+      if (isSameDate(date, new Date())) parts.push('今天');
+      if (isSameDate(date, selectedDate)) parts.push('目前選取');
+      return parts.join('，');
+    }
+
+    function selectDate(date, updateMonth = true, focusCalendar = false) {
+      saveSelectedDate(false);
+      selectedDate = startOfDay(date);
+      if (updateMonth) {
+        displayYear = selectedDate.getFullYear();
+        displayMonth = selectedDate.getMonth();
+      }
+      el.jumpDate.value = dateKeyFromDate(selectedDate);
+      renderCalendar(focusCalendar);
+      loadSelectedDate();
+      announce(`已選取${formatDateForSpeech(selectedDate)}`);
+    }
+
+    function goToday() { selectDate(new Date(), true, true); }
+    function moveDay(delta) { selectDate(addDays(selectedDate, delta), true, true); }
+    function changeMonth(delta) {
+      displayMonth += delta;
+      if (displayMonth < 0) { displayMonth = 11; displayYear--; }
+      if (displayMonth > 11) { displayMonth = 0; displayYear++; }
+      renderCalendar(true);
+      announce(`${displayYear} 年 ${displayMonth + 1} 月`);
+    }
+
+    function loadSelectedDate() {
+      const key = dateKeyFromDate(selectedDate);
+      const lunar = safeLunar(selectedDate);
+      const holiday = getHolidayName(selectedDate, lunar);
+      const data = getAllData()[key] || { goal: '', entries: [] };
+      el.selectedDateSummary.innerHTML = `<strong>${formatDateForSpeech(selectedDate)}</strong><span>${lunar.full}${holiday ? `｜${escapeHtml(holiday)}` : ''}</span>`;
+      el.dayGoal.value = data.goal || '';
+      el.entryList.innerHTML = '';
+      (data.entries || []).forEach(entry => addEntry({ ...entry, focus: false }));
+      if (!data.entries || data.entries.length === 0) {
+        addEntry({ start: '', end: '', label: '學習紀錄', text: '', focus: false });
+      }
+      updateEntryLabels();
+    }
+
+    function addPresetEntry() {
+      const value = el.presetSlot.value;
+      if (!value) { updateStatus('請先選擇常用時段。', true); el.presetSlot.focus(); return; }
+      const [start, end, label] = value.split('|');
+      addEntry({ start, end, label, text: '', focus: true });
+      el.presetSlot.value = '';
+      scheduleAutoSave();
+    }
+
+    function addCustomEntry() {
+      addEntry({ start: el.customStart.value, end: el.customEnd.value, label: el.customLabel.value || '自訂時段', text: '', focus: true });
+      el.customLabel.value = '';
+      scheduleAutoSave();
+    }
+
+    function addEntry({ id, start = '', end = '', label = '', text = '', focus = false } = {}) {
+      const entryId = id || `entry-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const block = document.createElement('section');
+      block.className = 'entry';
+      block.dataset.entryId = entryId;
+      block.innerHTML = `
+        <div class="entry-header">
+          <div><label for="${entryId}-start">開始</label><input id="${entryId}-start" type="time" data-entry-start value="${escapeAttr(start)}"></div>
+          <div><label for="${entryId}-end">結束</label><input id="${entryId}-end" type="time" data-entry-end value="${escapeAttr(end)}"></div>
+          <div><label for="${entryId}-label">時段名稱</label><input id="${entryId}-label" type="text" data-entry-label value="${escapeAttr(label)}" placeholder="例如：點字閱讀"></div>
+          <button type="button" class="danger delete-entry" data-delete-entry aria-label="刪除此學習時段">刪除</button>
+        </div>
+        <label for="${entryId}-text" data-entry-text-label>學習內容</label>
+        <textarea id="${entryId}-text" data-entry-text placeholder="請輸入這個時段的學習內容、遇到的困難、完成情形。">${escapeHtml(text)}</textarea>`;
+      el.entryList.appendChild(block);
+      updateEntryLabels();
+      if (focus) {
+        setTimeout(() => block.querySelector('[data-entry-text]').focus(), 50);
+        announce('已新增學習時段');
+      }
+    }
+
+    function updateEntryLabels() {
+      [...el.entryList.querySelectorAll('.entry')].forEach((entry, index) => {
+        const label = entry.querySelector('[data-entry-text-label]');
+        const name = entry.querySelector('[data-entry-label]')?.value || `第 ${index + 1} 筆`;
+        if (label) label.textContent = `學習內容：${name}`;
+      });
+    }
+
+    function collectCurrentData() {
+      const entries = [...el.entryList.querySelectorAll('.entry')].map(entry => ({
+        id: entry.dataset.entryId,
+        start: entry.querySelector('[data-entry-start]')?.value || '',
+        end: entry.querySelector('[data-entry-end]')?.value || '',
+        label: entry.querySelector('[data-entry-label]')?.value || '',
+        text: entry.querySelector('[data-entry-text]')?.value || ''
+      }));
+      return { goal: el.dayGoal.value, entries, updatedAt: new Date().toISOString() };
+    }
+
+    function getAllData() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+      catch { return {}; }
+    }
+
+    function saveAllData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function saveSelectedDate(show = true) {
+      const key = dateKeyFromDate(selectedDate);
+      const data = getAllData();
+      data[key] = collectCurrentData();
+      saveAllData(data);
+      if (show) updateStatus('已儲存。', true);
+      renderCalendar(false);
+    }
+
+    function scheduleAutoSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => saveSelectedDate(true), 500);
+    }
+
+    function clearSelectedDate() {
+      const key = dateKeyFromDate(selectedDate);
+      if (!confirm(`確定清除 ${key} 的所有紀錄嗎？`)) return;
+      const data = getAllData();
+      delete data[key];
+      saveAllData(data);
+      loadSelectedDate();
+      renderCalendar(false);
+      updateStatus('本日紀錄已清除。', true);
+    }
+
+    function buildExportText() {
+      const key = dateKeyFromDate(selectedDate);
+      const lunar = safeLunar(selectedDate);
+      const holiday = getHolidayName(selectedDate, lunar);
+      const data = collectCurrentData();
+      let text = `點字學習學生無障礙日曆紀錄\n`;
+      text += `========================================\n`;
+      text += `日期：${formatDateForSpeech(selectedDate)}\n`;
+      text += `${lunar.full}\n`;
+      if (holiday) text += `節日：${holiday}\n`;
+      text += `最後更新：${new Date().toLocaleString('zh-TW', { hour12: false })}\n\n`;
+      text += `【今日學習目標】\n${data.goal.trim() || '未填寫'}\n\n`;
+      text += `【分時段學習紀錄】\n`;
+      data.entries.forEach((entry, index) => {
+        const time = [entry.start, entry.end].filter(Boolean).join('–') || '未填時間';
+        text += `\n${index + 1}. ${time} ${entry.label || '學習時段'}\n`;
+        text += `${entry.text.trim() || '未填寫'}\n`;
+      });
+      text += `\n資料鍵：${key}\n`;
+      return text;
+    }
+
+    async function copyText(show = true) {
+      const text = buildExportText();
+      try {
+        await navigator.clipboard.writeText(text);
+        if (show) updateStatus('已複製今日紀錄文字。', true);
+        return true;
+      } catch {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        const ok = document.execCommand('copy');
+        temp.remove();
+        if (show) updateStatus(ok ? '已複製今日紀錄文字。' : '複製失敗，請改用下載 TXT。', true);
+        return ok;
+      }
+    }
+
+    function downloadTextFile() {
+      const key = dateKeyFromDate(selectedDate);
+      downloadBlob(buildExportText(), `點字學習紀錄_${key}.txt`, 'text/plain;charset=utf-8');
+      updateStatus('已下載 TXT。', true);
+    }
+
+    function downloadJsonBackup() {
+      const all = getAllData();
+      const key = dateKeyFromDate(new Date());
+      downloadBlob(JSON.stringify(all, null, 2), `點字學習日曆備份_${key}.json`, 'application/json;charset=utf-8');
+      updateStatus('已下載 JSON 備份。', true);
+    }
+
+    function downloadPdf() {
+      saveSelectedDate(false);
+      window.print();
+    }
+
+    async function openGoogleKeep() {
+      await copyText(false);
+      window.open('https://keep.google.com/', '_blank', 'noopener');
+      updateStatus('已複製紀錄並開啟 Google Keep，請貼上內容。', true);
+    }
+
+    function openGmail() {
+      const key = dateKeyFromDate(selectedDate);
+      const to = encodeURIComponent(el.mailTo.value.trim());
+      const subject = encodeURIComponent(`點字學習紀錄 - ${key}`);
+      const body = encodeURIComponent(buildExportText());
+      const url = `https://mail.google.com/mail/?view=cm&fs=1${to ? `&to=${to}` : ''}&su=${subject}&body=${body}`;
+      window.open(url, '_blank', 'noopener');
+      updateStatus('已開啟 Gmail 撰寫視窗。', true);
+    }
+
+    function downloadBlob(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }
+
+    function updateStatus(message, speak = false) {
+      el.saveStatus.textContent = message;
+      if (speak) announce(message);
+      clearTimeout(updateStatus.timer);
+      updateStatus.timer = setTimeout(() => { el.saveStatus.textContent = '資料會自動儲存在這台電腦的瀏覽器中。'; }, 2500);
+    }
+
+    function openHelp() {
+      el.helpModal.hidden = false;
+      document.getElementById('closeHelpBtn').focus();
+    }
+    function closeHelp() {
+      el.helpModal.hidden = true;
+      document.getElementById('entryTitle').focus();
+    }
+
+    function leapMonth(year) { return LUNAR_INFO[year - 1900] & 0xf; }
+    function leapDays(year) { return leapMonth(year) ? ((LUNAR_INFO[year - 1900] & 0x10000) ? 30 : 29) : 0; }
+    function monthDays(year, month) { return (LUNAR_INFO[year - 1900] & (0x10000 >> month)) ? 30 : 29; }
+    function lunarYearDays(year) {
+      let sum = 348;
+      for (let i = 0x8000; i > 0x8; i >>= 1) if (LUNAR_INFO[year - 1900] & i) sum += 1;
+      return sum + leapDays(year);
+    }
+
+    function solarToLunar(date) {
+      const base = new Date(1900, 0, 31);
+      let offset = Math.floor((startOfDay(date) - base) / 86400000);
+      let year = 1900;
+      while (year < 2101 && offset >= lunarYearDays(year)) { offset -= lunarYearDays(year); year++; }
+      const leap = leapMonth(year);
+      let month = 1;
+      let isLeap = false;
+      while (month <= 12) {
+        const days = isLeap ? leapDays(year) : monthDays(year, month);
+        if (offset < days) break;
+        offset -= days;
+        if (leap && month === leap && !isLeap) isLeap = true;
+        else { if (isLeap) isLeap = false; month++; }
+      }
+      return { year, month, day: offset + 1, isLeap };
+    }
+
+    function safeLunar(date) {
+      try {
+        const lunar = solarToLunar(date);
+        const gz = gan[(lunar.year - 4) % 10] + zhi[(lunar.year - 4) % 12];
+        const short = `${lunar.isLeap ? '閏' : ''}${lunar.month === 1 && lunar.day === 1 ? '春節' : lunarDayNames[lunar.day]}`;
+        const full = `農曆：${gz}${zodiac[(lunar.year - 4) % 12]}年 ${lunar.isLeap ? '閏' : ''}${lunarMonthNames[lunar.month]}月${lunarDayNames[lunar.day]}`;
+        return { ...lunar, short, full };
+      } catch {
+        return { year: date.getFullYear(), month: 0, day: 0, isLeap: false, short: '農曆未載入', full: '農曆未載入' };
+      }
+    }
+
+    function getHolidayName(date, lunar) {
+      const md = `${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+      const fixed = {
+        '01-01': '開國紀念日', '02-28': '和平紀念日', '04-04': '兒童節',
+        '04-05': '清明節', '05-01': '勞動節', '10-10': '國慶日'
+      };
+      const lunarFixed = {
+        '1-1': '春節', '1-15': '元宵節', '5-5': '端午節',
+        '7-7': '七夕', '8-15': '中秋節', '9-9': '重陽節'
+      };
+      return fixed[md] || lunarFixed[`${lunar.month}-${lunar.day}`] || '';
+    }
+
+    function startOfDay(date) { return new Date(date.getFullYear(), date.getMonth(), date.getDate()); }
+    function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return startOfDay(d); }
+    function parseDateKey(key) { const [y, m, d] = key.split('-').map(Number); return new Date(y, m - 1, d); }
+    function pad2(n) { return String(n).padStart(2, '0'); }
+    function dateKeyFromDate(date) { return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`; }
+    function isSameDate(a, b) { return dateKeyFromDate(a) === dateKeyFromDate(b); }
+    function formatDateForSpeech(date) { return date.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }); }
+    function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+    function escapeAttr(value) { return escapeHtml(value).replace(/`/g, '&#96;'); }
+  </script>
+</body>
+</html>
