@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>通用日曆待辦規劃小麥麥</title>
+  <title>通用待辦檢核月曆小麥麥</title>
   <style>
     :root {
       --bg:#f4eef7;
@@ -100,8 +100,8 @@
   <header>
     <div class="header-row">
       <div>
-        <h1>📅 通用日曆待辦規劃小麥麥</h1>
-        <p class="subtitle">四層線性排版：今日資訊 → 新增待辦 → 當月月曆 → 輸出選項。支援 NVDA 與鍵盤操作。</p>
+        <h1>📅 通用待辦檢核月曆小麥麥</h1>
+        <p class="subtitle">四大區塊排版：今日資訊 → 新增待辦 → 月曆檢視 → 輸出選項。支援 NVDA 與鍵盤操作。</p>
       </div>
       <div class="theme-buttons no-print" role="group" aria-label="對比色選擇">
         <button type="button" class="light" data-theme-btn="black-yellow">黑底黃字</button>
@@ -566,7 +566,7 @@
         saveAllData(importedData); renderCalendar(); loadSelectedDate(); renderTodayPanel(); updateStatus('已載入 JSON 備份檔。', true);
       } catch (error) { console.error(error); updateStatus('載入 JSON 失敗，請確認檔案格式是否正確。', true); }
     }
-    function openGmail() { const to = encodeURIComponent(el.mailTo.value.trim()); const subject = encodeURIComponent(`通用日曆待辦規劃 - ${dateKeyFromDate(selectedDate)}`); const body = encodeURIComponent(buildExportText()); window.open(`https://mail.google.com/mail/?view=cm&fs=1${to ? `&to=${to}` : ''}&su=${subject}&body=${body}`, '_blank', 'noopener'); updateStatus('已開啟 Gmail 信件撰寫視窗。', true); }
+    function openGmail() { const to = encodeURIComponent(el.mailTo.value.trim()); const subject = encodeURIComponent(`通用待辦檢核月曆小麥麥 - ${dateKeyFromDate(selectedDate)}`); const body = encodeURIComponent(buildExportText()); window.open(`https://mail.google.com/mail/?view=cm&fs=1${to ? `&to=${to}` : ''}&su=${subject}&body=${body}`, '_blank', 'noopener'); updateStatus('已開啟 Gmail 信件撰寫視窗。', true); }
     function downloadIcsFile() { const ics = buildIcsContent(); const key = dateKeyFromDate(selectedDate); if (!ics) { updateStatus('這一天沒有待辦事項，無法產生 ICS。', true); return; } downloadBlob(ics, `通用日曆待辦規劃_${key}.ics`, 'text/calendar;charset=utf-8'); updateStatus('已下載 ICS 行事曆檔，可匯入 Google 日曆。', true); }
 
     function buildIcsContent() {
@@ -574,7 +574,7 @@
       const key = dateKeyFromDate(selectedDate);
       const entries = getEntriesByKey(key).filter(entry => (entry.timeText || '').trim() || (entry.text || '').trim());
       if (!entries.length) return '';
-      const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Maimai//Universal Calendar Todo//ZH-TW','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:' + icsEscape('通用日曆待辦規劃小麥麥'),'X-WR-TIMEZONE:Asia/Taipei'];
+      const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Maimai//Universal Calendar Todo//ZH-TW','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:' + icsEscape('通用待辦檢核月曆小麥麥'),'X-WR-TIMEZONE:Asia/Taipei'];
       entries.forEach((entry, index) => {
         const range = parseTimeRange(entry.timeText || '');
         const title = ((entry.text || '').split(/\r?\n/)[0] || entry.timeText || '待辦事項').slice(0,80);
