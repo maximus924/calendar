@@ -24,7 +24,9 @@
       --note:#dfe8df;
       --shadow:0 10px 26px rgba(78,52,91,.13);
     }
-    body[data-theme="morandi"] { --bg:#f3edf5; --panel:#fffafd; --panel-2:#e9deee; --text:#33293b; --muted:#6f6376; --border:#cbbbd5; --primary:#7b658d; --primary-dark:#645173; --success:#667f68; --danger:#a35f68; --warning:#ad875a; --focus:#d7b15e; --today:#e7ddee; --selected:#ead8ef; --holiday:#efdede; --note:#dfe8df; --shadow:0 10px 26px rgba(78,52,91,.13); }
+    body[data-theme="natural"], body[data-theme="morandi"] { --bg:#f3edf5; --panel:#fffafd; --panel-2:#e9deee; --text:#33293b; --muted:#6f6376; --border:#cbbbd5; --primary:#7b658d; --primary-dark:#645173; --success:#667f68; --danger:#a35f68; --warning:#ad875a; --focus:#d7b15e; --today:#e7ddee; --selected:#ead8ef; --holiday:#efdede; --note:#dfe8df; --shadow:0 10px 26px rgba(78,52,91,.13); }
+    body[data-theme="deepblue-white"] { --bg:#061426; --panel:#0b1d35; --panel-2:#112b4a; --text:#fff; --muted:#e5eefb; --border:#fff; --primary:#fff; --primary-dark:#dbeafe; --success:#fff; --danger:#fff; --warning:#fff; --focus:#ff0; --today:#183b65; --selected:#244d7a; --holiday:#1b304c; --note:#173b30; --shadow:none; }
+    body[data-theme="deepblue-yellow"] { --bg:#061426; --panel:#0b1d35; --panel-2:#112b4a; --text:#ff0; --muted:#ffff99; --border:#ff0; --primary:#ff0; --primary-dark:#ffff66; --success:#0f0; --danger:#ffb3b3; --warning:#ff0; --focus:#fff; --today:#183b65; --selected:#244d7a; --holiday:#2e1d2d; --note:#173b30; --shadow:none; }
     body[data-theme="black-yellow"] { --bg:#000; --panel:#000; --panel-2:#111; --text:#ff0; --muted:#ffff99; --border:#ff0; --primary:#ff0; --primary-dark:#ffff66; --success:#0f0; --danger:#ff8080; --warning:#ff0; --focus:#fff; --today:#222200; --selected:#333300; --holiday:#330000; --note:#003300; --shadow:none; }
     body[data-theme="black-white"] { --bg:#000; --panel:#000; --panel-2:#111; --text:#fff; --muted:#e5e7eb; --border:#fff; --primary:#fff; --primary-dark:#fff; --success:#fff; --danger:#fff; --warning:#fff; --focus:#ff0; --today:#1f2937; --selected:#222; --holiday:#111; --note:#111; --shadow:none; }
     body[data-theme="yellow-black"] { --bg:#ff0; --panel:#ff0; --panel-2:#fff176; --text:#000; --muted:#111; --border:#000; --primary:#000; --primary-dark:#000; --success:#003300; --danger:#600; --warning:#000; --focus:#00f; --today:#fff176; --selected:#fff59d; --holiday:#ffd54f; --note:#fff176; --shadow:none; }
@@ -45,7 +47,7 @@
     .card { background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow); padding:18px; scroll-margin-top:14px; }
     .card h2, .card h3 { margin-top:0; }
     .layer-badge { display:inline-flex; align-items:center; justify-content:center; min-width:2.15rem; min-height:2.15rem; margin-right:.45rem; border-radius:999px; background:var(--primary); color:var(--panel); font-weight:900; }
-    body[data-theme="black-yellow"] .layer-badge, body[data-theme="black-white"] .layer-badge, body[data-theme="yellow-black"] .layer-badge { color:var(--bg); border:2px solid var(--border); }
+    body[data-theme="black-yellow"] .layer-badge, body[data-theme="black-white"] .layer-badge, body[data-theme="yellow-black"] .layer-badge, body[data-theme="deepblue-white"] .layer-badge, body[data-theme="deepblue-yellow"] .layer-badge { color:var(--bg); border:2px solid var(--border); }
     .toolbar, .theme-buttons { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px; }
     button, .button-like { border:2px solid transparent; border-radius:12px; min-height:44px; padding:9px 14px; background:var(--primary); color:var(--panel); cursor:pointer; font-weight:900; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
     button:hover { filter:brightness(1.06); }
@@ -101,11 +103,20 @@
     .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px; }
     .modal-backdrop[hidden] { display:none; }
     .modal { max-width:560px; width:100%; background:var(--panel); color:var(--text); border:2px solid var(--border); border-radius:18px; box-shadow:var(--shadow); padding:20px; }
+
+    .sel-grid { grid-template-columns:minmax(270px,1fr) minmax(240px,320px); gap:16px; align-items:stretch; }
+    .sel-form-stack { display:grid; gap:10px; }
+    .sel-form-stack label { margin:0 0 6px; }
+    .sel-form-stack select, .sel-form-stack textarea { background:var(--panel); }
+    .emotion-visual { display:flex; min-height:100%; align-items:center; justify-content:center; background:linear-gradient(160deg, var(--panel-2), var(--panel)); border:1px solid var(--border); border-radius:18px; padding:14px; }
+    .emotion-visual svg { max-width:100%; height:auto; }
+    .emotion-caption { text-align:center; font-weight:900; color:var(--primary); margin-top:8px; }
+    @media (max-width:760px) { .sel-grid { grid-template-columns:1fr; } .emotion-visual { min-height:220px; } }
     @media (max-width:760px) { .entry-row { grid-template-columns:1fr; } .day-button { min-height:74px; font-size:.9rem; } }
     @media print { header, .no-print, .modal-backdrop, #layer0, #layer1, #layer2, #layer3, #shortcutCard { display:none!important; } body { background:#fff; color:#000; } main { max-width:none; padding:0; } .card { border:0; box-shadow:none; padding:0; } textarea, input { border:0; } .entry { break-inside:avoid; background:#fff; border:1px solid #999; } }
   </style>
 </head>
-<body data-theme="morandi">
+<body data-theme="natural">
   <a href="#quickTodo" class="skip-link">跳到待辦事項內容欄</a>
   <div id="liveRegion" class="visually-hidden" aria-live="polite" aria-atomic="true" role="status"></div>
 
@@ -116,10 +127,12 @@
         <p class="subtitle">SEL情緒覺察 → 今日資訊 → 新增待辦 → 當月月曆 → 輸出選項。支援 NVDA 與鍵盤操作。</p>
       </div>
       <div class="theme-buttons no-print" role="group" aria-label="對比色選擇">
-        <button type="button" class="light" data-theme-btn="black-yellow">黑底黃字</button>
         <button type="button" class="light" data-theme-btn="black-white">黑底白字</button>
+        <button type="button" class="light" data-theme-btn="black-yellow">黑底黃字</button>
         <button type="button" class="light" data-theme-btn="yellow-black">黃底黑字</button>
-        <button type="button" class="light" data-theme-btn="morandi">莫蘭迪紫色</button>
+        <button type="button" class="light" data-theme-btn="deepblue-white">深藍底白字</button>
+        <button type="button" class="light" data-theme-btn="deepblue-yellow">深藍底黃字</button>
+        <button type="button" class="light" data-theme-btn="natural">自然色</button>
       </div>
     </div>
   </header>
@@ -130,47 +143,127 @@
         <h2 id="selTitle"><span class="layer-badge">0</span>SEL 情緒覺察與所在地天氣</h2>
         <p class="hint">每次開啟行事曆時，先花 30 秒覺察自己的情緒，再安排待辦事項。快捷鍵：<kbd>Alt</kbd> + <kbd>0</kbd>。</p>
         <div class="sel-grid">
-          <fieldset>
-            <legend>我現在的情緒，可以複選</legend>
-            <div class="emotion-grid" role="group" aria-label="情緒覺察複選選單">
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="平靜">平靜</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="開心">開心</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="期待">期待</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="有活力">有活力</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="感恩">感恩</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="緊張">緊張</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="焦慮">焦慮</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="生氣">生氣</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="難過">難過</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="疲倦">疲倦</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="挫折">挫折</label>
-              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="困惑">困惑</label>
+          <div class="sel-form-stack" aria-label="SEL 情緒覺察下拉式選單">
+            <div>
+              <label for="selEmotion">1. 我現在最明顯的情緒</label>
+              <select id="selEmotion" aria-describedby="selEmotionHint">
+                <option value="">尚未選擇</option>
+                <optgroup label="舒服與正向感受">
+                  <option value="平靜">平靜</option>
+                  <option value="開心">開心</option>
+                  <option value="期待">期待</option>
+                  <option value="有活力">有活力</option>
+                  <option value="感恩">感恩</option>
+                  <option value="安心">安心</option>
+                  <option value="自信">自信</option>
+                  <option value="好奇">好奇</option>
+                  <option value="專注">專注</option>
+                </optgroup>
+                <optgroup label="需要照顧的感受">
+                  <option value="緊張">緊張</option>
+                  <option value="焦慮">焦慮</option>
+                  <option value="生氣">生氣</option>
+                  <option value="難過">難過</option>
+                  <option value="疲倦">疲倦</option>
+                  <option value="挫折">挫折</option>
+                  <option value="困惑">困惑</option>
+                  <option value="害怕">害怕</option>
+                  <option value="孤單">孤單</option>
+                </optgroup>
+              </select>
+              <p id="selEmotionHint" class="hint">選好情緒後，右側會出現對應的情緒圖像；可搭配 NVDA 線性往下操作。</p>
             </div>
-          </fieldset>
-          <div>
-            <label for="selIntensity">情緒強度</label>
-            <select id="selIntensity">
-              <option value="">尚未選擇</option>
-              <option value="1">1 很輕微</option>
-              <option value="2">2 有一點</option>
-              <option value="3">3 普通明顯</option>
-              <option value="4">4 很明顯</option>
-              <option value="5">5 非常強烈</option>
-            </select>
-            <label for="selSupport">我現在最需要</label>
-            <select id="selSupport">
-              <option value="">尚未選擇</option>
-              <option value="先做三次深呼吸">先做三次深呼吸</option>
-              <option value="把任務拆成更小步驟">把任務拆成更小步驟</option>
-              <option value="先完成最重要的一件事">先完成最重要的一件事</option>
-              <option value="找同學或老師協助">找同學或老師協助</option>
-              <option value="喝水或休息一下">喝水或休息一下</option>
-              <option value="目前不需要特別協助">目前不需要特別協助</option>
-            </select>
+            <div>
+              <label for="selIntensity">2. 情緒強度</label>
+              <select id="selIntensity">
+                <option value="">尚未選擇</option>
+                <option value="1">1 很輕微，可以穩定面對</option>
+                <option value="2">2 有一點，需要留意</option>
+                <option value="3">3 普通明顯，需要調整節奏</option>
+                <option value="4">4 很明顯，需要先照顧自己</option>
+                <option value="5">5 非常強烈，建議先暫停並求助</option>
+              </select>
+            </div>
+            <div>
+              <label for="selSituation">3. 這個情緒主要來自</label>
+              <select id="selSituation">
+                <option value="">尚未選擇</option>
+                <option value="待辦事項很多">待辦事項很多</option>
+                <option value="即將上課、考試或報告">即將上課、考試或報告</option>
+                <option value="和同學、老師或家人互動">和同學、老師或家人互動</option>
+                <option value="身體疲累或睡眠不足">身體疲累或睡眠不足</option>
+                <option value="環境太吵、太亮或變化太多">環境太吵、太亮或變化太多</option>
+                <option value="完成了一件重要的事">完成了一件重要的事</option>
+                <option value="還不確定原因">還不確定原因</option>
+              </select>
+            </div>
+            <div>
+              <label for="selBody">4. 我身體現在的訊號</label>
+              <select id="selBody">
+                <option value="">尚未選擇</option>
+                <option value="呼吸穩定">呼吸穩定</option>
+                <option value="心跳變快">心跳變快</option>
+                <option value="肩頸緊繃">肩頸緊繃</option>
+                <option value="眼睛或身體疲累">眼睛或身體疲累</option>
+                <option value="想動一動">想動一動</option>
+                <option value="想安靜一下">想安靜一下</option>
+                <option value="沒有特別感覺">沒有特別感覺</option>
+              </select>
+            </div>
+            <div>
+              <label for="selSupport">5. 我現在最需要</label>
+              <select id="selSupport">
+                <option value="">尚未選擇</option>
+                <option value="先做三次深呼吸">先做三次深呼吸</option>
+                <option value="把任務拆成更小步驟">把任務拆成更小步驟</option>
+                <option value="先完成最重要的一件事">先完成最重要的一件事</option>
+                <option value="找同學或老師協助">找同學或老師協助</option>
+                <option value="喝水或休息一下">喝水或休息一下</option>
+                <option value="整理桌面或安靜環境">整理桌面或安靜環境</option>
+                <option value="目前不需要特別協助">目前不需要特別協助</option>
+              </select>
+            </div>
+            <div>
+              <label for="selStrategy">6. 我可以採取的調節策略</label>
+              <select id="selStrategy">
+                <option value="">尚未選擇</option>
+                <option value="停一下：暫停 30 秒，慢慢吸氣吐氣">停一下：暫停 30 秒，慢慢吸氣吐氣</option>
+                <option value="說出來：用一句話說出現在的感受">說出來：用一句話說出現在的感受</option>
+                <option value="拆小步：只排下一個可完成的小任務">拆小步：只排下一個可完成的小任務</option>
+                <option value="找資源：請老師、同學或家人協助">找資源：請老師、同學或家人協助</option>
+                <option value="轉換環境：喝水、伸展或短暫離開座位">轉換環境：喝水、伸展或短暫離開座位</option>
+                <option value="肯定自己：提醒自己已經完成的努力">肯定自己：提醒自己已經完成的努力</option>
+              </select>
+            </div>
+            <div>
+              <label for="selNextStep">7. 接下來第一個小行動</label>
+              <select id="selNextStep">
+                <option value="">尚未選擇</option>
+                <option value="先新增一筆今天最重要的待辦">先新增一筆今天最重要的待辦</option>
+                <option value="先檢查今天已安排的待辦">先檢查今天已安排的待辦</option>
+                <option value="先下載或備份今天的規劃">先下載或備份今天的規劃</option>
+                <option value="先休息 3 分鐘再開始">先休息 3 分鐘再開始</option>
+                <option value="先向他人確認下一步">先向他人確認下一步</option>
+              </select>
+            </div>
+            <div>
+              <label for="selNote">8. 覺察小記</label>
+              <textarea id="selNote" placeholder="例如：我現在有點緊張，因為待辦事項很多。我先把最重要的一件事排在第一個時段。"></textarea>
+            </div>
           </div>
           <div>
-            <label for="selNote">覺察小記</label>
-            <textarea id="selNote" placeholder="例如：我現在有點緊張，因為待辦事項很多。我先把最重要的一件事排在第一個時段。"></textarea>
+            <div id="emotionVisual" class="emotion-visual" aria-live="polite" aria-label="情緒圖像預覽">
+              <div>
+                <svg viewBox="0 0 220 220" role="img" aria-label="尚未選擇情緒圖像" width="220" height="220">
+                  <rect x="12" y="12" width="196" height="196" rx="38" fill="#e9deee" stroke="#7b658d" stroke-width="4"/>
+                  <circle cx="110" cy="95" r="50" fill="#d9c4e5"/>
+                  <circle cx="92" cy="88" r="6" fill="#33293b"/><circle cx="128" cy="88" r="6" fill="#33293b"/>
+                  <path d="M88 122 Q110 136 132 122" fill="none" stroke="#33293b" stroke-width="6" stroke-linecap="round"/>
+                  <text x="110" y="178" text-anchor="middle" font-size="18" font-weight="700" fill="#33293b">請先選擇情緒</text>
+                </svg>
+                <div class="emotion-caption">尚未選擇情緒</div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="toolbar no-print" role="group" aria-label="SEL 覺察操作" style="margin-top:12px;">
@@ -346,9 +439,15 @@
         mailTo: document.getElementById('mailTo'),
         saveStatus: document.getElementById('saveStatus'),
         jsonFileInput: document.getElementById('jsonFileInput'),
+        selEmotion: document.getElementById('selEmotion'),
         selIntensity: document.getElementById('selIntensity'),
+        selSituation: document.getElementById('selSituation'),
+        selBody: document.getElementById('selBody'),
         selSupport: document.getElementById('selSupport'),
+        selStrategy: document.getElementById('selStrategy'),
+        selNextStep: document.getElementById('selNextStep'),
         selNote: document.getElementById('selNote'),
+        emotionVisual: document.getElementById('emotionVisual'),
         selSummary: document.getElementById('selSummary'),
         selSaveBtn: document.getElementById('selSaveBtn'),
         selClearBtn: document.getElementById('selClearBtn'),
@@ -363,6 +462,10 @@
       el.selSaveBtn.addEventListener('click', saveSelCheckin);
       el.selClearBtn.addEventListener('click', clearSelCheckin);
       el.weatherBtn.addEventListener('click', requestLocalWeather);
+      el.selEmotion.addEventListener('change', () => {
+        renderEmotionVisual(el.selEmotion.value);
+        announce(el.selEmotion.value ? `目前選擇的情緒是${el.selEmotion.value}` : '尚未選擇情緒');
+      });
       el.quickForm.addEventListener('submit', event => event.preventDefault());
       document.getElementById('quickAddBtn').addEventListener('click', addQuickTodo);
       el.quickClearBtn.addEventListener('click', clearQuickForm);
@@ -395,7 +498,15 @@
 
     function setTheme(themeName) {
       document.body.dataset.theme = themeName;
-      const names = { 'black-yellow':'黑底黃字', 'black-white':'黑底白字', 'yellow-black':'黃底黑字', 'morandi':'莫蘭迪紫色' };
+      const names = {
+        'black-white':'黑底白字',
+        'black-yellow':'黑底黃字',
+        'yellow-black':'黃底黑字',
+        'deepblue-white':'深藍底白字',
+        'deepblue-yellow':'深藍底黃字',
+        'natural':'自然色',
+        'morandi':'自然色'
+      };
       announce(`已切換為${names[themeName] || themeName}`);
     }
 
@@ -408,34 +519,110 @@
       return { data, record:data[key] };
     }
 
+    const EMOTION_VISUAL_META = {
+      '平靜': { mood:'calm', label:'平靜', bg:'#dfe8e1', face:'#c8d8cb', accent:'#6f8b73', mouth:'M86 124 Q110 132 134 124' },
+      '開心': { mood:'happy', label:'開心', bg:'#efe6c9', face:'#ead49e', accent:'#ad875a', mouth:'M82 118 Q110 148 138 118' },
+      '期待': { mood:'spark', label:'期待', bg:'#e8def1', face:'#d9c4e5', accent:'#7b658d', mouth:'M86 121 Q110 142 134 121' },
+      '有活力': { mood:'energy', label:'有活力', bg:'#dce8df', face:'#c1d7c5', accent:'#667f68', mouth:'M82 118 Q110 146 138 118' },
+      '感恩': { mood:'heart', label:'感恩', bg:'#efe0e2', face:'#e6c8ce', accent:'#a35f68', mouth:'M88 123 Q110 136 132 123' },
+      '安心': { mood:'calm', label:'安心', bg:'#dfe8e1', face:'#c9dacd', accent:'#667f68', mouth:'M86 124 Q110 135 134 124' },
+      '自信': { mood:'star', label:'自信', bg:'#e6deee', face:'#d9c4e5', accent:'#7b658d', mouth:'M83 120 Q110 143 137 120' },
+      '好奇': { mood:'question', label:'好奇', bg:'#e7e0d4', face:'#dbcdbb', accent:'#8c7358', mouth:'M94 126 Q110 134 126 126' },
+      '專注': { mood:'focus', label:'專注', bg:'#dfe3ee', face:'#c8d0e1', accent:'#5f6f8a', mouth:'M94 126 L126 126' },
+      '緊張': { mood:'wave', label:'緊張', bg:'#eee3d6', face:'#e2cfb8', accent:'#ad875a', mouth:'M90 130 Q110 116 130 130' },
+      '焦慮': { mood:'storm', label:'焦慮', bg:'#e3e0ee', face:'#cfc8df', accent:'#6f6376', mouth:'M89 131 Q110 113 131 131' },
+      '生氣': { mood:'angry', label:'生氣', bg:'#efdede', face:'#e4bfc2', accent:'#a35f68', mouth:'M90 132 Q110 118 130 132' },
+      '難過': { mood:'tear', label:'難過', bg:'#dfe3ee', face:'#c4cedd', accent:'#5c6f89', mouth:'M88 132 Q110 115 132 132' },
+      '疲倦': { mood:'sleep', label:'疲倦', bg:'#e9e3df', face:'#d7c7bd', accent:'#8a7568', mouth:'M92 128 Q110 136 128 128' },
+      '挫折': { mood:'cloud', label:'挫折', bg:'#e4e0e5', face:'#d1c5d4', accent:'#7b658d', mouth:'M88 132 Q110 116 132 132' },
+      '困惑': { mood:'question', label:'困惑', bg:'#e6e1d7', face:'#d8cbb9', accent:'#8c7358', mouth:'M96 126 Q110 120 124 126' },
+      '害怕': { mood:'storm', label:'害怕', bg:'#e2e4ee', face:'#c8cfe3', accent:'#596b8e', mouth:'M92 132 Q110 112 128 132' },
+      '孤單': { mood:'moon', label:'孤單', bg:'#e2e4ee', face:'#c7ccda', accent:'#5f6f8a', mouth:'M90 130 Q110 120 130 130' }
+    };
+
+    function renderEmotionVisual(emotion) {
+      const meta = EMOTION_VISUAL_META[emotion] || { mood:'neutral', label:'尚未選擇情緒', bg:'#e9deee', face:'#d9c4e5', accent:'#7b658d', mouth:'M88 122 Q110 136 132 122' };
+      const extra = emotionVisualExtra(meta.mood, meta.accent);
+      el.emotionVisual.innerHTML = `
+        <div>
+          <svg viewBox="0 0 220 220" role="img" aria-label="${escapeAttr(meta.label)}情緒圖像" width="220" height="220">
+            <rect x="12" y="12" width="196" height="196" rx="38" fill="${meta.bg}" stroke="${meta.accent}" stroke-width="4"/>
+            ${extra.behind}
+            <ellipse cx="110" cy="104" rx="56" ry="48" fill="${meta.face}"/>
+            <circle cx="86" cy="104" r="14" fill="${meta.face}"/>
+            <circle cx="134" cy="104" r="14" fill="${meta.face}"/>
+            <circle cx="92" cy="95" r="6" fill="#33293b"/><circle cx="128" cy="95" r="6" fill="#33293b"/>
+            ${extra.face}
+            <path d="${meta.mouth}" fill="none" stroke="#33293b" stroke-width="6" stroke-linecap="round"/>
+            ${extra.front}
+            <text x="110" y="183" text-anchor="middle" font-size="22" font-weight="800" fill="#33293b">${escapeHtml(meta.label)}</text>
+          </svg>
+          <div class="emotion-caption">${escapeHtml(meta.label)}</div>
+        </div>`;
+    }
+
+    function emotionVisualExtra(mood, accent) {
+      const empty = { behind:'', face:'', front:'' };
+      const shapes = {
+        calm: { behind:`<path d="M48 158 C72 142 91 174 116 156 C143 138 158 171 180 154" fill="none" stroke="${accent}" stroke-width="5" stroke-linecap="round" opacity=".55"/>`, face:'', front:'' },
+        happy: { behind:`<circle cx="54" cy="55" r="10" fill="${accent}" opacity=".55"/><circle cx="170" cy="60" r="8" fill="${accent}" opacity=".55"/>`, face:'', front:`<path d="M80 114 Q92 122 104 114" fill="none" stroke="#33293b" stroke-width="4"/><path d="M116 114 Q128 122 140 114" fill="none" stroke="#33293b" stroke-width="4"/>` },
+        spark: { behind:`<path d="M55 62 L62 78 L79 84 L62 90 L55 106 L48 90 L31 84 L48 78 Z" fill="${accent}" opacity=".55"/><path d="M166 48 L171 59 L183 64 L171 69 L166 80 L161 69 L149 64 L161 59 Z" fill="${accent}" opacity=".55"/>`, face:'', front:'' },
+        energy: { behind:`<path d="M60 42 L44 84 H64 L54 124 L98 66 H74 L88 42 Z" fill="${accent}" opacity=".55"/><path d="M160 42 L144 84 H164 L154 124 L198 66 H174 L188 42 Z" fill="${accent}" opacity=".35"/>`, face:'', front:'' },
+        heart: { behind:`<path d="M55 76 C38 56 12 79 33 101 L55 123 L77 101 C98 79 72 56 55 76Z" fill="${accent}" opacity=".55"/><path d="M166 63 C154 49 135 66 150 82 L166 98 L182 82 C197 66 178 49 166 63Z" fill="${accent}" opacity=".38"/>`, face:'', front:'' },
+        star: { behind:`<path d="M53 50 L61 72 L84 72 L66 86 L73 108 L53 95 L33 108 L40 86 L22 72 L45 72 Z" fill="${accent}" opacity=".5"/><path d="M170 58 L176 73 L192 73 L179 83 L184 99 L170 90 L156 99 L161 83 L148 73 L164 73 Z" fill="${accent}" opacity=".35"/>`, face:'', front:'' },
+        question: { behind:`<text x="52" y="76" font-size="46" font-weight="900" fill="${accent}" opacity=".55">?</text><text x="166" y="88" font-size="34" font-weight="900" fill="${accent}" opacity=".38">?</text>`, face:'', front:'' },
+        focus: { behind:`<circle cx="110" cy="104" r="78" fill="none" stroke="${accent}" stroke-width="4" opacity=".35"/><circle cx="110" cy="104" r="92" fill="none" stroke="${accent}" stroke-width="3" opacity=".2"/>`, face:'', front:`<path d="M84 90 H102" stroke="#33293b" stroke-width="4" stroke-linecap="round"/><path d="M118 90 H136" stroke="#33293b" stroke-width="4" stroke-linecap="round"/>` },
+        wave: { behind:`<path d="M46 62 C62 45 78 80 94 62 C110 45 126 80 142 62 C158 45 174 80 190 62" fill="none" stroke="${accent}" stroke-width="5" stroke-linecap="round" opacity=".5"/>`, face:'', front:'' },
+        storm: { behind:`<path d="M60 52 C75 33 107 43 109 65 C129 58 150 73 145 95 H48 C34 83 42 59 60 52Z" fill="${accent}" opacity=".28"/><path d="M154 54 L139 86 H157 L143 122" fill="none" stroke="${accent}" stroke-width="6" stroke-linecap="round" opacity=".65"/>`, face:'', front:'' },
+        angry: { behind:`<path d="M52 48 L88 72" stroke="${accent}" stroke-width="7" stroke-linecap="round"/><path d="M168 48 L132 72" stroke="${accent}" stroke-width="7" stroke-linecap="round"/>`, face:`<path d="M82 82 L102 92" stroke="#33293b" stroke-width="5" stroke-linecap="round"/><path d="M138 82 L118 92" stroke="#33293b" stroke-width="5" stroke-linecap="round"/>`, front:'' },
+        tear: { behind:'', face:'', front:`<path d="M142 105 C155 122 154 134 143 137 C132 134 131 122 142 105Z" fill="#7aa7d9" opacity=".85"/>` },
+        sleep: { behind:`<text x="152" y="72" font-size="38" font-weight="900" fill="${accent}" opacity=".65">Z</text><text x="174" y="48" font-size="26" font-weight="900" fill="${accent}" opacity=".45">Z</text>`, face:`<path d="M84 94 H100" stroke="#33293b" stroke-width="5" stroke-linecap="round"/><path d="M120 94 H136" stroke="#33293b" stroke-width="5" stroke-linecap="round"/>`, front:'' },
+        cloud: { behind:`<path d="M50 64 C63 43 92 48 98 68 C116 56 144 68 142 92 H45 C34 84 37 69 50 64Z" fill="${accent}" opacity=".28"/>`, face:'', front:'' },
+        moon: { behind:`<path d="M164 42 C140 49 128 74 139 96 C117 84 107 54 121 33 C135 12 164 18 178 34 C173 37 169 40 164 42Z" fill="${accent}" opacity=".45"/>`, face:'', front:'' },
+        neutral: empty
+      };
+      return shapes[mood] || empty;
+    }
+
     function selectedEmotionValues() {
-      return [...document.querySelectorAll('input[name="selEmotion"]:checked')].map(input => input.value);
+      return el.selEmotion.value ? [el.selEmotion.value] : [];
     }
 
     function setEmotionValues(values = []) {
-      document.querySelectorAll('input[name="selEmotion"]').forEach(input => { input.checked = values.includes(input.value); });
+      const value = Array.isArray(values) ? (values[0] || '') : (values || '');
+      el.selEmotion.value = value;
+      renderEmotionVisual(value);
     }
 
     function collectSelCheckin() {
       return {
+        emotion:el.selEmotion.value,
         emotions:selectedEmotionValues(),
         intensity:el.selIntensity.value,
+        situation:el.selSituation.value,
+        bodySignal:el.selBody.value,
         support:el.selSupport.value,
+        strategy:el.selStrategy.value,
+        nextStep:el.selNextStep.value,
         note:el.selNote.value.trim(),
         updatedAt:new Date().toISOString()
       };
     }
 
     function hasSelData(sel) {
-      return Boolean(sel && ((sel.emotions || []).length || sel.intensity || sel.support || (sel.note || '').trim()));
+      return Boolean(sel && ((sel.emotion || (sel.emotions || [])[0]) || sel.intensity || sel.situation || sel.bodySignal || sel.support || sel.strategy || sel.nextStep || (sel.note || '').trim()));
     }
 
     function loadSelCheckin() {
       const key = dateKeyFromDate(new Date());
       const sel = getAllData()[key]?.sel || {};
-      setEmotionValues(sel.emotions || []);
+      setEmotionValues(sel.emotion || sel.emotions || []);
       el.selIntensity.value = sel.intensity || '';
+      el.selSituation.value = sel.situation || '';
+      el.selBody.value = sel.bodySignal || '';
       el.selSupport.value = sel.support || '';
+      el.selStrategy.value = sel.strategy || '';
+      el.selNextStep.value = sel.nextStep || '';
       el.selNote.value = sel.note || '';
       renderSelSummary(sel);
     }
@@ -454,7 +641,11 @@
     function clearSelCheckin() {
       setEmotionValues([]);
       el.selIntensity.value = '';
+      el.selSituation.value = '';
+      el.selBody.value = '';
       el.selSupport.value = '';
+      el.selStrategy.value = '';
+      el.selNextStep.value = '';
       el.selNote.value = '';
       const key = dateKeyFromDate(new Date());
       const data = getAllData();
@@ -469,6 +660,7 @@
     }
 
     function renderSelSummary(sel) {
+      renderEmotionVisual(sel?.emotion || (sel?.emotions || [])[0] || el.selEmotion.value || '');
       if (!hasSelData(sel)) {
         el.selSummary.innerHTML = '<strong>今日 SEL：</strong>尚未完成情緒覺察。';
         return;
@@ -479,9 +671,14 @@
     function formatSelForDisplay(sel) {
       if (!hasSelData(sel)) return '尚未完成情緒覺察。';
       const parts = [];
-      if ((sel.emotions || []).length) parts.push(`情緒：${sel.emotions.join('、')}`);
+      const emotion = sel.emotion || (sel.emotions || [])[0] || '';
+      if (emotion) parts.push(`情緒：${emotion}`);
       if (sel.intensity) parts.push(`強度：${sel.intensity}/5`);
+      if (sel.situation) parts.push(`來源：${sel.situation}`);
+      if (sel.bodySignal) parts.push(`身體訊號：${sel.bodySignal}`);
       if (sel.support) parts.push(`需要：${sel.support}`);
+      if (sel.strategy) parts.push(`調節策略：${sel.strategy}`);
+      if (sel.nextStep) parts.push(`第一個小行動：${sel.nextStep}`);
       if (sel.note) parts.push(`小記：${sel.note}`);
       return parts.join('｜');
     }
