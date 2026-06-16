@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>通用待辦檢核月曆小麥麥</title>
+  <title>通用日曆待辦規劃小麥麥</title>
   <style>
     :root {
-      --bg:#f4eef7;
+      --bg:#f3edf5;
       --panel:#fffafd;
-      --panel-2:#ebe1ef;
-      --text:#352b3f;
-      --muted:#70627b;
-      --border:#cdbbd6;
-      --primary:#7b5e8e;
-      --primary-dark:#664b77;
-      --success:#6f8a73;
+      --panel-2:#e9deee;
+      --text:#33293b;
+      --muted:#6f6376;
+      --border:#cbbbd5;
+      --primary:#7b658d;
+      --primary-dark:#645173;
+      --success:#667f68;
       --danger:#a35f68;
-      --warning:#b08a5a;
-      --focus:#d8b15e;
-      --today:#e8dff0;
-      --selected:#ead9ef;
-      --holiday:#f0dddd;
+      --warning:#ad875a;
+      --focus:#d7b15e;
+      --today:#e7ddee;
+      --selected:#ead8ef;
+      --holiday:#efdede;
       --note:#dfe8df;
-      --shadow:0 10px 28px rgba(70,45,84,.12);
+      --shadow:0 10px 26px rgba(78,52,91,.13);
     }
-    body[data-theme="morandi"] { --bg:#f4eef7; --panel:#fffafd; --panel-2:#ebe1ef; --text:#352b3f; --muted:#70627b; --border:#cdbbd6; --primary:#7b5e8e; --primary-dark:#664b77; --success:#6f8a73; --danger:#a35f68; --warning:#b08a5a; --focus:#d8b15e; --today:#e8dff0; --selected:#ead9ef; --holiday:#f0dddd; --note:#dfe8df; --shadow:0 10px 28px rgba(70,45,84,.12); }
+    body[data-theme="morandi"] { --bg:#f3edf5; --panel:#fffafd; --panel-2:#e9deee; --text:#33293b; --muted:#6f6376; --border:#cbbbd5; --primary:#7b658d; --primary-dark:#645173; --success:#667f68; --danger:#a35f68; --warning:#ad875a; --focus:#d7b15e; --today:#e7ddee; --selected:#ead8ef; --holiday:#efdede; --note:#dfe8df; --shadow:0 10px 26px rgba(78,52,91,.13); }
     body[data-theme="black-yellow"] { --bg:#000; --panel:#000; --panel-2:#111; --text:#ff0; --muted:#ffff99; --border:#ff0; --primary:#ff0; --primary-dark:#ffff66; --success:#0f0; --danger:#ff8080; --warning:#ff0; --focus:#fff; --today:#222200; --selected:#333300; --holiday:#330000; --note:#003300; --shadow:none; }
     body[data-theme="black-white"] { --bg:#000; --panel:#000; --panel-2:#111; --text:#fff; --muted:#e5e7eb; --border:#fff; --primary:#fff; --primary-dark:#fff; --success:#fff; --danger:#fff; --warning:#fff; --focus:#ff0; --today:#1f2937; --selected:#222; --holiday:#111; --note:#111; --shadow:none; }
     body[data-theme="yellow-black"] { --bg:#ff0; --panel:#ff0; --panel-2:#fff176; --text:#000; --muted:#111; --border:#000; --primary:#000; --primary-dark:#000; --success:#003300; --danger:#600; --warning:#000; --focus:#00f; --today:#fff176; --selected:#fff59d; --holiday:#ffd54f; --note:#fff176; --shadow:none; }
@@ -38,15 +38,16 @@
     .skip-link:focus { top:0; }
     header { background:var(--panel); border-bottom:2px solid var(--border); padding:18px clamp(16px,4vw,32px); box-shadow:var(--shadow); }
     .header-row { display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    h1 { margin:0; font-size:clamp(1.35rem,3vw,2rem); color:var(--primary); }
+    h1 { margin:0; font-size:clamp(1.4rem,3vw,2.05rem); color:var(--primary); }
     .subtitle { margin:6px 0 0; color:var(--muted); font-weight:700; }
-    main { max-width:1100px; margin:0 auto; padding:18px clamp(12px,3vw,24px) 28px; }
+    main { max-width:1120px; margin:0 auto; padding:18px clamp(12px,3vw,24px) 30px; }
     .linear-stack { display:flex; flex-direction:column; gap:18px; }
     .card { background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow); padding:18px; scroll-margin-top:14px; }
     .card h2, .card h3 { margin-top:0; }
-    .layer-badge { display:inline-flex; align-items:center; justify-content:center; min-width:2.2rem; min-height:2.2rem; margin-right:.45rem; border-radius:999px; background:var(--primary); color:#fff; font-weight:900; }
+    .layer-badge { display:inline-flex; align-items:center; justify-content:center; min-width:2.15rem; min-height:2.15rem; margin-right:.45rem; border-radius:999px; background:var(--primary); color:var(--panel); font-weight:900; }
+    body[data-theme="black-yellow"] .layer-badge, body[data-theme="black-white"] .layer-badge, body[data-theme="yellow-black"] .layer-badge { color:var(--bg); border:2px solid var(--border); }
     .toolbar, .theme-buttons { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px; }
-    button, .button-like { border:2px solid transparent; border-radius:12px; min-height:44px; padding:9px 14px; background:var(--primary); color:#fff; cursor:pointer; font-weight:900; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
+    button, .button-like { border:2px solid transparent; border-radius:12px; min-height:44px; padding:9px 14px; background:var(--primary); color:var(--panel); cursor:pointer; font-weight:900; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
     button:hover { filter:brightness(1.06); }
     button.secondary { background:#6f687a; color:#fff; }
     button.success { background:var(--success); color:#fff; }
@@ -54,19 +55,28 @@
     button.danger { background:var(--danger); color:#fff; }
     button.light { background:var(--panel-2); color:var(--text); border-color:var(--border); }
     input, select, textarea { width:100%; min-height:44px; padding:10px 12px; border:1px solid var(--border); border-radius:12px; background:var(--panel); color:var(--text); }
+    input[type="checkbox"] { width:1.25rem; min-height:1.25rem; margin-top:.25rem; flex:0 0 auto; }
     label { display:block; font-weight:900; margin:10px 0 6px; }
-    textarea { resize:vertical; line-height:1.7; min-height:94px; }
+    textarea { resize:vertical; line-height:1.7; min-height:96px; }
     .hint { color:var(--muted); font-size:.95rem; margin:6px 0; }
     .status { color:var(--success); font-weight:900; min-height:28px; }
     .now-grid, .quick-grid, .entry-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; align-items:end; }
     .now-item, .date-summary { background:var(--panel-2); border:1px solid var(--border); border-radius:14px; padding:14px; font-weight:800; }
     .now-item span { display:block; color:var(--muted); font-size:.92rem; font-weight:800; }
-    .now-item strong { display:block; color:var(--primary); font-size:1.2rem; white-space:pre-wrap; }
+    .now-item strong { display:block; color:var(--primary); font-size:1.16rem; white-space:pre-wrap; }
     .today-checklist { display:grid; gap:8px; margin-top:10px; }
+    .sel-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; align-items:start; }
+    fieldset { border:1px solid var(--border); border-radius:14px; padding:12px; margin:0; background:var(--panel-2); }
+    legend { font-weight:900; color:var(--primary); padding:0 6px; }
+    .emotion-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(92px,1fr)); gap:8px; margin-top:8px; }
+    .emotion-option { display:flex; align-items:center; gap:8px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:8px; font-weight:800; }
+    .emotion-option input { width:1.1rem; min-height:1.1rem; }
+    .sel-summary, .weather-report { margin-top:12px; background:var(--panel-2); border:1px solid var(--border); border-radius:14px; padding:12px; font-weight:800; white-space:pre-wrap; }
+    .weather-report strong, .sel-summary strong { color:var(--primary); }
     .check-item { display:flex; gap:10px; align-items:flex-start; background:var(--panel-2); border:1px solid var(--border); border-radius:12px; padding:10px; }
-    .check-item input { width:1.25rem; min-height:1.25rem; margin-top:.25rem; }
     .check-item.done .check-text { text-decoration:line-through; opacity:.75; }
     .calendar-head, #calendarGrid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+    .calendar-head { margin-top:10px; }
     .weekday { text-align:center; font-weight:900; color:var(--muted); padding:4px 2px; }
     .day-button { width:100%; min-height:92px; padding:6px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:12px; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:1px; font-weight:800; text-align:left; }
     .day-button:hover { background:var(--panel-2); }
@@ -81,16 +91,18 @@
     .todo-preview { color:var(--success); font-weight:900; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .entry-list { display:grid; gap:12px; margin-top:12px; }
     .entry { border:1px solid var(--border); border-radius:16px; background:var(--panel-2); padding:12px; }
-    .entry-row { grid-template-columns:minmax(170px,1fr) minmax(220px,2fr) auto auto; }
-    .entry textarea { background:var(--panel); margin-top:10px; min-height:86px; }
+    .entry-row { grid-template-columns:minmax(180px,1fr) minmax(260px,2fr) auto auto; }
+    .entry textarea { background:var(--panel); min-height:74px; }
+    .entry .check-item { margin:0; align-self:end; }
+    .empty-state { padding:12px; border-radius:12px; background:var(--panel-2); border:1px dashed var(--border); font-weight:800; }
     .export-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:10px; }
     .shortcut-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(235px,1fr)); gap:6px 18px; padding-left:1.2rem; }
     kbd { background:var(--panel-2); border:1px solid var(--border); border-radius:6px; padding:1px 6px; font-weight:900; color:var(--primary); }
     .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px; }
     .modal-backdrop[hidden] { display:none; }
     .modal { max-width:560px; width:100%; background:var(--panel); color:var(--text); border:2px solid var(--border); border-radius:18px; box-shadow:var(--shadow); padding:20px; }
-    @media (max-width:700px) { .entry-row { grid-template-columns:1fr; } .day-button { min-height:74px; font-size:.9rem; } }
-    @media print { header, .no-print, .modal-backdrop, #layer1, #layer2, #layer3, #shortcutCard { display:none!important; } body { background:#fff; color:#000; } main { max-width:none; padding:0; } .card { border:0; box-shadow:none; padding:0; } textarea, input { border:0; } .entry { break-inside:avoid; background:#fff; border:1px solid #999; } }
+    @media (max-width:760px) { .entry-row { grid-template-columns:1fr; } .day-button { min-height:74px; font-size:.9rem; } }
+    @media print { header, .no-print, .modal-backdrop, #layer0, #layer1, #layer2, #layer3, #shortcutCard { display:none!important; } body { background:#fff; color:#000; } main { max-width:none; padding:0; } .card { border:0; box-shadow:none; padding:0; } textarea, input { border:0; } .entry { break-inside:avoid; background:#fff; border:1px solid #999; } }
   </style>
 </head>
 <body data-theme="morandi">
@@ -100,8 +112,8 @@
   <header>
     <div class="header-row">
       <div>
-        <h1>📅 通用待辦檢核月曆小麥麥</h1>
-        <p class="subtitle">四大區塊排版：今日資訊 → 新增待辦 → 月曆檢視 → 輸出選項。支援 NVDA 與鍵盤操作。</p>
+        <h1>📅 通用日曆待辦規劃小麥麥</h1>
+        <p class="subtitle">SEL情緒覺察 → 今日資訊 → 新增待辦 → 當月月曆 → 輸出選項。支援 NVDA 與鍵盤操作。</p>
       </div>
       <div class="theme-buttons no-print" role="group" aria-label="對比色選擇">
         <button type="button" class="light" data-theme-btn="black-yellow">黑底黃字</button>
@@ -114,6 +126,62 @@
 
   <main>
     <div class="linear-stack">
+      <section class="card" id="layer0" aria-labelledby="selTitle" tabindex="-1">
+        <h2 id="selTitle"><span class="layer-badge">0</span>SEL 情緒覺察與所在地天氣</h2>
+        <p class="hint">每次開啟行事曆時，先花 30 秒覺察自己的情緒，再安排待辦事項。快捷鍵：<kbd>Alt</kbd> + <kbd>0</kbd>。</p>
+        <div class="sel-grid">
+          <fieldset>
+            <legend>我現在的情緒，可以複選</legend>
+            <div class="emotion-grid" role="group" aria-label="情緒覺察複選選單">
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="平靜">平靜</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="開心">開心</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="期待">期待</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="有活力">有活力</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="感恩">感恩</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="緊張">緊張</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="焦慮">焦慮</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="生氣">生氣</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="難過">難過</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="疲倦">疲倦</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="挫折">挫折</label>
+              <label class="emotion-option"><input type="checkbox" name="selEmotion" value="困惑">困惑</label>
+            </div>
+          </fieldset>
+          <div>
+            <label for="selIntensity">情緒強度</label>
+            <select id="selIntensity">
+              <option value="">尚未選擇</option>
+              <option value="1">1 很輕微</option>
+              <option value="2">2 有一點</option>
+              <option value="3">3 普通明顯</option>
+              <option value="4">4 很明顯</option>
+              <option value="5">5 非常強烈</option>
+            </select>
+            <label for="selSupport">我現在最需要</label>
+            <select id="selSupport">
+              <option value="">尚未選擇</option>
+              <option value="先做三次深呼吸">先做三次深呼吸</option>
+              <option value="把任務拆成更小步驟">把任務拆成更小步驟</option>
+              <option value="先完成最重要的一件事">先完成最重要的一件事</option>
+              <option value="找同學或老師協助">找同學或老師協助</option>
+              <option value="喝水或休息一下">喝水或休息一下</option>
+              <option value="目前不需要特別協助">目前不需要特別協助</option>
+            </select>
+          </div>
+          <div>
+            <label for="selNote">覺察小記</label>
+            <textarea id="selNote" placeholder="例如：我現在有點緊張，因為待辦事項很多。我先把最重要的一件事排在第一個時段。"></textarea>
+          </div>
+        </div>
+        <div class="toolbar no-print" role="group" aria-label="SEL 覺察操作" style="margin-top:12px;">
+          <button type="button" id="selSaveBtn" class="success">儲存今日 SEL 覺察</button>
+          <button type="button" id="selClearBtn" class="light">清除 SEL 勾選</button>
+          <button type="button" id="weatherBtn" class="secondary">偵測所在地天氣</button>
+        </div>
+        <div id="selSummary" class="sel-summary" aria-live="polite"><strong>今日 SEL：</strong>尚未完成情緒覺察。</div>
+        <div id="weatherReport" class="weather-report" aria-live="polite"><strong>所在地天氣：</strong>尚未偵測。按「偵測所在地天氣」後，瀏覽器會詢問是否允許取得位置。</div>
+      </section>
+
       <section class="card" id="layer1" aria-labelledby="todayTitle" tabindex="-1">
         <h2 id="todayTitle"><span class="layer-badge">1</span>今天日期與目前規劃</h2>
         <div class="now-grid" aria-live="polite">
@@ -194,6 +262,7 @@
       <section class="card shortcut-card no-print" id="shortcutCard" aria-labelledby="shortcutTitle">
         <h2 id="shortcutTitle">鍵盤快捷鍵</h2>
         <ul class="shortcut-list">
+          <li><kbd>Alt</kbd> + <kbd>0</kbd>：SEL 情緒覺察與所在地天氣</li>
           <li><kbd>Alt</kbd> + <kbd>1</kbd>：第一層，今天日期與目前規劃</li>
           <li><kbd>Alt</kbd> + <kbd>2</kbd>：第二層，新增待辦事項</li>
           <li><kbd>Alt</kbd> + <kbd>3</kbd>：第三層，當月月曆</li>
@@ -218,7 +287,7 @@
   <div id="helpModal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
     <div class="modal">
       <h2 id="helpTitle">快捷鍵與操作說明</h2>
-      <p>本頁保留快捷鍵清單中列出的操作；新增待辦請使用「新增到月曆」實體按鈕。</p>
+      <p>本頁保留快捷鍵清單中列出的操作；新增待辦請使用「新增到月曆」實體按鈕。每次開啟可先按 Alt + 0 進行 SEL 情緒覺察。</p>
       <div class="toolbar" style="justify-content:flex-end;"><button type="button" id="closeHelpBtn">關閉</button></div>
     </div>
   </div>
@@ -226,14 +295,12 @@
   <script>
     'use strict';
 
-    const STORAGE_KEY = 'universal-calendar-todo-maimai-morandi-v1';
+    const STORAGE_KEY = 'universal-calendar-todo-maimai-morandi-v3';
+    const WEATHER_CACHE_KEY = 'universal-calendar-todo-maimai-weather-v1';
     const WEEKDAYS = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
     const lunarDayNames = ['', '初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
-    const lunarMonthNames = ['', '正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '臘'];
-    const gan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
-    const zhi = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
-    const zodiac = ['鼠','牛','虎','兔','龍','蛇','馬','羊','猴','雞','狗','豬'];
-    const LUNAR_INFO = [0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06aa0,0x0a6b6,0x056a0,0x02b40,0x0d9e4,0x0d950,0x05f52,0x0b540,0x0b6a0,0x196d6,0x095b0,0x049b0,0x0a953,0x0a4b0,0x0b4b0,0x14b55,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052b3,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06aa0,0x0a6b6,0x056a0,0x02b40,0x0d9e4,0x0d950,0x05f52,0x0b540];
+    const lunarMonthNumberMap = { '正':1, '一':1, '二':2, '三':3, '四':4, '五':5, '六':6, '七':7, '八':8, '九':9, '十':10, '冬':11, '十一':11, '臘':12, '十二':12 };
+    const zhiToZodiac = { '子':'鼠', '丑':'牛', '寅':'虎', '卯':'兔', '辰':'龍', '巳':'蛇', '午':'馬', '未':'羊', '申':'猴', '酉':'雞', '戌':'狗', '亥':'豬' };
 
     let selectedDate = startOfDay(new Date());
     let displayYear = selectedDate.getFullYear();
@@ -246,6 +313,9 @@
     function init() {
       cacheElements();
       bindEvents();
+      loadSelCheckin();
+      loadWeatherCache();
+      setTimeout(() => announce('請先到最上方完成 SEL 情緒覺察，再開始規劃今天的待辦事項。'), 500);
       el.quickDate.value = dateKeyFromDate(selectedDate);
       el.jumpDate.value = dateKeyFromDate(selectedDate);
       renderTodayPanel();
@@ -256,16 +326,46 @@
     }
 
     function cacheElements() {
-      ['liveRegion','todayText','todayLunarText','nowTimeText','currentPlanText','todayChecklist','quickForm','quickDate','quickTimeText','quickTodo','quickClearBtn','calendarGrid','monthHeading','jumpDate','selectedDateSummary','entryList','mailTo','saveStatus','jsonFileInput','helpModal'].forEach(id => {
-        el[id.replace('liveRegion','live')] = document.getElementById(id);
+      Object.assign(el, {
+        live: document.getElementById('liveRegion'),
+        todayText: document.getElementById('todayText'),
+        todayLunarText: document.getElementById('todayLunarText'),
+        nowTimeText: document.getElementById('nowTimeText'),
+        currentPlanText: document.getElementById('currentPlanText'),
+        todayChecklist: document.getElementById('todayChecklist'),
+        quickForm: document.getElementById('quickForm'),
+        quickDate: document.getElementById('quickDate'),
+        quickTimeText: document.getElementById('quickTimeText'),
+        quickTodo: document.getElementById('quickTodo'),
+        quickClearBtn: document.getElementById('quickClearBtn'),
+        calendarGrid: document.getElementById('calendarGrid'),
+        monthHeading: document.getElementById('monthHeading'),
+        jumpDate: document.getElementById('jumpDate'),
+        selectedDateSummary: document.getElementById('selectedDateSummary'),
+        entryList: document.getElementById('entryList'),
+        mailTo: document.getElementById('mailTo'),
+        saveStatus: document.getElementById('saveStatus'),
+        jsonFileInput: document.getElementById('jsonFileInput'),
+        selIntensity: document.getElementById('selIntensity'),
+        selSupport: document.getElementById('selSupport'),
+        selNote: document.getElementById('selNote'),
+        selSummary: document.getElementById('selSummary'),
+        selSaveBtn: document.getElementById('selSaveBtn'),
+        selClearBtn: document.getElementById('selClearBtn'),
+        weatherBtn: document.getElementById('weatherBtn'),
+        weatherReport: document.getElementById('weatherReport'),
+        helpModal: document.getElementById('helpModal')
       });
     }
 
     function bindEvents() {
       document.querySelectorAll('[data-theme-btn]').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeBtn)));
+      el.selSaveBtn.addEventListener('click', saveSelCheckin);
+      el.selClearBtn.addEventListener('click', clearSelCheckin);
+      el.weatherBtn.addEventListener('click', requestLocalWeather);
       el.quickForm.addEventListener('submit', event => event.preventDefault());
       document.getElementById('quickAddBtn').addEventListener('click', addQuickTodo);
-      document.getElementById('quickClearBtn').addEventListener('click', clearQuickForm);
+      el.quickClearBtn.addEventListener('click', clearQuickForm);
       el.todayChecklist.addEventListener('change', handleTodayChecklistChange);
       el.jumpDate.addEventListener('change', () => { if (el.jumpDate.value) selectDate(parseDateKey(el.jumpDate.value), true, true); });
       el.calendarGrid.addEventListener('click', event => { const btn = event.target.closest('.day-button'); if (btn) selectDate(parseDateKey(btn.dataset.date), false, false); });
@@ -279,8 +379,8 @@
       document.getElementById('downloadTxtBtn').addEventListener('click', downloadTextFile);
       document.getElementById('downloadPdfBtn').addEventListener('click', downloadPdf);
       document.getElementById('downloadJsonBtn').addEventListener('click', downloadJsonFile);
-      document.getElementById('loadJsonBtn').addEventListener('click', () => { el.jsonFileInput.value = ''; el.jsonFileInput.click(); });
-      el.jsonFileInput.addEventListener('change', handleJsonFileLoad);
+      document.getElementById('loadJsonBtn').addEventListener('click', () => el.jsonFileInput.click());
+      el.jsonFileInput.addEventListener('change', loadJsonFile);
       document.getElementById('openGmailBtn').addEventListener('click', openGmail);
       document.getElementById('downloadIcsBtn').addEventListener('click', downloadIcsFile);
       document.getElementById('closeHelpBtn').addEventListener('click', closeHelp);
@@ -288,53 +388,191 @@
       window.addEventListener('beforeunload', () => saveSelectedDate(false));
     }
 
-    function getAllData() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; } }
-    function saveAllData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    function announce(message) {
+      el.live.textContent = '';
+      setTimeout(() => { el.live.textContent = message; }, 20);
+    }
 
-    function addQuickTodo() {
-      const text = el.quickTodo.value.trim();
-      if (!text) { updateStatus('請先輸入待辦事項內容。', true); el.quickTodo.focus(); return; }
-      const date = el.quickDate.value ? parseDateKey(el.quickDate.value) : new Date();
-      const key = dateKeyFromDate(date);
-      const timeText = el.quickTimeText.value.trim() || '未設定時段';
+    function setTheme(themeName) {
+      document.body.dataset.theme = themeName;
+      const names = { 'black-yellow':'黑底黃字', 'black-white':'黑底白字', 'yellow-black':'黃底黑字', 'morandi':'莫蘭迪紫色' };
+      announce(`已切換為${names[themeName] || themeName}`);
+    }
+
+
+
+    function getDayRecord(key) {
       const data = getAllData();
-      if (!data[key]) data[key] = { entries:[], updatedAt:new Date().toISOString() };
+      if (!data[key]) data[key] = { entries:[] };
       data[key].entries = data[key].entries || [];
-      data[key].entries.push({ id:createId(), timeText, text, done:false, createdAt:new Date().toISOString() });
-      data[key].updatedAt = new Date().toISOString();
-      saveAllData(data);
-      selectedDate = startOfDay(date); displayYear = selectedDate.getFullYear(); displayMonth = selectedDate.getMonth();
-      el.jumpDate.value = key;
-      renderCalendar(); loadSelectedDate(); renderTodayPanel(); clearQuickForm(true);
-      updateStatus(`已新增到月曆：${text}`, true);
+      return { data, record:data[key] };
     }
 
-    function clearQuickForm(keepDate = false) {
-      if (!keepDate) el.quickDate.value = dateKeyFromDate(new Date());
-      el.quickTimeText.value = '';
-      el.quickTodo.value = '';
-      el.quickDate.focus();
+    function selectedEmotionValues() {
+      return [...document.querySelectorAll('input[name="selEmotion"]:checked')].map(input => input.value);
     }
+
+    function setEmotionValues(values = []) {
+      document.querySelectorAll('input[name="selEmotion"]').forEach(input => { input.checked = values.includes(input.value); });
+    }
+
+    function collectSelCheckin() {
+      return {
+        emotions:selectedEmotionValues(),
+        intensity:el.selIntensity.value,
+        support:el.selSupport.value,
+        note:el.selNote.value.trim(),
+        updatedAt:new Date().toISOString()
+      };
+    }
+
+    function hasSelData(sel) {
+      return Boolean(sel && ((sel.emotions || []).length || sel.intensity || sel.support || (sel.note || '').trim()));
+    }
+
+    function loadSelCheckin() {
+      const key = dateKeyFromDate(new Date());
+      const sel = getAllData()[key]?.sel || {};
+      setEmotionValues(sel.emotions || []);
+      el.selIntensity.value = sel.intensity || '';
+      el.selSupport.value = sel.support || '';
+      el.selNote.value = sel.note || '';
+      renderSelSummary(sel);
+    }
+
+    function saveSelCheckin() {
+      const key = dateKeyFromDate(new Date());
+      const { data, record } = getDayRecord(key);
+      record.sel = collectSelCheckin();
+      record.updatedAt = new Date().toISOString();
+      saveAllData(data);
+      renderSelSummary(record.sel);
+      renderCalendar(false);
+      updateStatus('已儲存今日 SEL 情緒覺察。', true);
+    }
+
+    function clearSelCheckin() {
+      setEmotionValues([]);
+      el.selIntensity.value = '';
+      el.selSupport.value = '';
+      el.selNote.value = '';
+      const key = dateKeyFromDate(new Date());
+      const data = getAllData();
+      if (data[key]) {
+        delete data[key].sel;
+        if (!(data[key].entries || []).length) delete data[key];
+        saveAllData(data);
+      }
+      renderSelSummary(null);
+      renderCalendar(false);
+      updateStatus('已清除今日 SEL 覺察。', true);
+    }
+
+    function renderSelSummary(sel) {
+      if (!hasSelData(sel)) {
+        el.selSummary.innerHTML = '<strong>今日 SEL：</strong>尚未完成情緒覺察。';
+        return;
+      }
+      el.selSummary.innerHTML = `<strong>今日 SEL：</strong>${escapeHtml(formatSelForDisplay(sel))}`;
+    }
+
+    function formatSelForDisplay(sel) {
+      if (!hasSelData(sel)) return '尚未完成情緒覺察。';
+      const parts = [];
+      if ((sel.emotions || []).length) parts.push(`情緒：${sel.emotions.join('、')}`);
+      if (sel.intensity) parts.push(`強度：${sel.intensity}/5`);
+      if (sel.support) parts.push(`需要：${sel.support}`);
+      if (sel.note) parts.push(`小記：${sel.note}`);
+      return parts.join('｜');
+    }
+
+    function formatSelForExport(sel) {
+      return hasSelData(sel) ? formatSelForDisplay(sel) : '尚未填寫';
+    }
+
+    function loadWeatherCache() {
+      try {
+        const cached = JSON.parse(localStorage.getItem(WEATHER_CACHE_KEY) || 'null');
+        if (cached?.text) el.weatherReport.innerHTML = `<strong>所在地天氣：</strong>${escapeHtml(cached.text)}\n更新時間：${escapeHtml(cached.updatedAtText || '')}`;
+      } catch { /* 忽略舊快取 */ }
+    }
+
+    function requestLocalWeather() {
+      if (!navigator.geolocation) {
+        updateStatus('此瀏覽器不支援定位，無法偵測所在地天氣。', true);
+        return;
+      }
+      el.weatherReport.innerHTML = '<strong>所在地天氣：</strong>正在取得定位與天氣資料，請在瀏覽器中允許位置權限。';
+      navigator.geolocation.getCurrentPosition(fetchWeatherByPosition, error => {
+        const messages = { 1:'你尚未允許定位權限。', 2:'目前無法取得定位資訊。', 3:'定位逾時，請稍後再試。' };
+        updateStatus(messages[error.code] || '定位失敗。', true);
+        el.weatherReport.innerHTML = `<strong>所在地天氣：</strong>${escapeHtml(messages[error.code] || '定位失敗。')}`;
+      }, { enableHighAccuracy:false, timeout:10000, maximumAge:600000 });
+    }
+
+    async function fetchWeatherByPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(latitude.toFixed(4))}&longitude=${encodeURIComponent(longitude.toFixed(4))}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&timezone=auto`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('天氣服務回應失敗');
+        const weather = await response.json();
+        const c = weather.current || {};
+        const u = weather.current_units || {};
+        const text = `${weatherCodeName(c.weather_code)}，氣溫 ${valueWithUnit(c.temperature_2m, u.temperature_2m)}，體感 ${valueWithUnit(c.apparent_temperature, u.apparent_temperature)}，濕度 ${valueWithUnit(c.relative_humidity_2m, u.relative_humidity_2m)}，降雨 ${valueWithUnit(c.precipitation, u.precipitation)}，風速 ${valueWithUnit(c.wind_speed_10m, u.wind_speed_10m)}。`;
+        const updatedAtText = new Date().toLocaleString('zh-TW', { hour12:false });
+        localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({ text, updatedAtText, latitude, longitude }));
+        el.weatherReport.innerHTML = `<strong>所在地天氣：</strong>${escapeHtml(text)}\n更新時間：${escapeHtml(updatedAtText)}`;
+        announce(`所在地天氣，${text}`);
+      } catch (error) {
+        console.error(error);
+        updateStatus('取得天氣失敗，請確認網路連線後再試。', true);
+        el.weatherReport.innerHTML = '<strong>所在地天氣：</strong>取得天氣失敗，請確認網路連線後再試。';
+      }
+    }
+
+    function valueWithUnit(value, unit) {
+      if (value === undefined || value === null || Number.isNaN(value)) return '未提供';
+      return `${value}${unit || ''}`;
+    }
+
+    function weatherCodeName(code) {
+      const map = {
+        0:'晴朗', 1:'大致晴朗', 2:'局部多雲', 3:'陰天',
+        45:'有霧', 48:'霧淞', 51:'小毛毛雨', 53:'毛毛雨', 55:'大毛毛雨',
+        56:'凍毛毛雨', 57:'強凍毛毛雨', 61:'小雨', 63:'中雨', 65:'大雨',
+        66:'凍雨', 67:'強凍雨', 71:'小雪', 73:'中雪', 75:'大雪', 77:'雪粒',
+        80:'陣雨', 81:'較強陣雨', 82:'強陣雨', 85:'陣雪', 86:'強陣雪',
+        95:'雷雨', 96:'雷雨伴隨小冰雹', 99:'雷雨伴隨大冰雹'
+      };
+      return map[Number(code)] || '天氣狀態未明';
+    }
+
 
     function renderTodayPanel() {
       const now = new Date();
-      const key = dateKeyFromDate(now);
-      const entries = getEntriesByKey(key);
-      el.todayText.textContent = formatRocDate(now);
-      el.todayLunarText.textContent = safeLunar(now).full.replace('農曆：','');
+      const todayKey = dateKeyFromDate(now);
+      const entries = getEntriesByKey(todayKey);
+      const lunar = safeLunar(now);
+      el.todayText.textContent = formatRocDateForSpeech(now);
+      el.todayLunarText.textContent = lunar.full.replace('農曆：', '');
       el.nowTimeText.textContent = now.toLocaleTimeString('zh-TW', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
       el.currentPlanText.textContent = getCurrentPlans(now, entries) || '無規劃';
-      renderTodayChecklist(key, entries);
+      renderTodayChecklist(todayKey, entries);
     }
 
     function renderTodayChecklist(key, entries) {
       el.todayChecklist.innerHTML = '';
-      if (!entries.length) { el.todayChecklist.textContent = '今天尚未建立待辦事項。'; return; }
+      if (!entries.length) {
+        el.todayChecklist.textContent = '今日無待辦事項。';
+        return;
+      }
       entries.forEach(entry => {
-        const label = document.createElement('label');
-        label.className = 'check-item' + (entry.done ? ' done' : '');
-        label.innerHTML = `<input type="checkbox" data-today-entry-id="${escapeAttr(entry.id)}" ${entry.done ? 'checked' : ''}><span class="check-text">${escapeHtml(entry.timeText || '未設定時段')}：${escapeHtml(entry.text || '未填寫')}</span>`;
-        el.todayChecklist.appendChild(label);
+        const item = document.createElement('label');
+        item.className = `check-item${entry.done ? ' done' : ''}`;
+        item.innerHTML = `<input type="checkbox" data-today-entry-id="${escapeAttr(entry.id)}" ${entry.done ? 'checked' : ''}><span class="check-text">${escapeHtml(entry.timeText || '未設定時段')}：${escapeHtml(entry.text || '未填寫')}</span>`;
+        el.todayChecklist.appendChild(item);
       });
     }
 
@@ -344,21 +582,52 @@
       const key = dateKeyFromDate(new Date());
       const data = getAllData();
       const entry = (data[key]?.entries || []).find(item => item.id === checkbox.dataset.todayEntryId);
-      if (entry) {
-        entry.done = checkbox.checked;
-        data[key].updatedAt = new Date().toISOString();
-        saveAllData(data);
-        renderTodayPanel();
-        if (key === dateKeyFromDate(selectedDate)) loadSelectedDate();
-        renderCalendar();
-      }
+      if (!entry) return;
+      entry.done = checkbox.checked;
+      data[key].updatedAt = new Date().toISOString();
+      saveAllData(data);
+      renderTodayPanel();
+      if (key === dateKeyFromDate(selectedDate)) loadSelectedDate();
+      renderCalendar();
+      updateStatus(checkbox.checked ? '已勾選完成。' : '已取消勾選。', true);
+    }
+
+    function addQuickTodo() {
+      const dateValue = el.quickDate.value;
+      const timeText = el.quickTimeText.value.trim();
+      const text = el.quickTodo.value.trim();
+      if (!dateValue) { updateStatus('請先選擇日期。', true); el.quickDate.focus(); return; }
+      if (!timeText) { updateStatus('請輸入時段。', true); el.quickTimeText.focus(); return; }
+      if (!text) { updateStatus('請輸入待辦事項內容。', true); el.quickTodo.focus(); return; }
+      const data = getAllData();
+      if (!data[dateValue]) data[dateValue] = { entries:[] };
+      data[dateValue].entries = data[dateValue].entries || [];
+      data[dateValue].entries.push({ id:createId(), timeText, text, done:false, updatedAt:new Date().toISOString() });
+      data[dateValue].updatedAt = new Date().toISOString();
+      saveAllData(data);
+      clearQuickForm({ keepDate:true });
+      selectedDate = parseDateKey(dateValue);
+      displayYear = selectedDate.getFullYear();
+      displayMonth = selectedDate.getMonth();
+      el.jumpDate.value = dateValue;
+      renderTodayPanel();
+      renderCalendar();
+      loadSelectedDate();
+      updateStatus('已新增到月曆。', true);
+    }
+
+    function clearQuickForm(options = {}) {
+      if (!options.keepDate) el.quickDate.value = dateKeyFromDate(selectedDate);
+      el.quickTimeText.value = '';
+      el.quickTodo.value = '';
+      el.quickTimeText.focus();
     }
 
     function renderCalendar(focusSelected = false) {
       const data = getAllData();
       const first = new Date(displayYear, displayMonth, 1);
       const start = addDays(first, -first.getDay());
-      el.monthHeading.innerHTML = `<strong>${displayYear} 年 ${displayMonth + 1} 月</strong><span>${safeLunar(first).full}</span>`;
+      el.monthHeading.innerHTML = `<strong>${displayYear} 年 ${displayMonth + 1} 月</strong><span>${escapeHtml(safeLunar(first).full)}</span>`;
       el.calendarGrid.innerHTML = '';
       for (let i = 0; i < 42; i++) {
         const date = addDays(start, i);
@@ -377,7 +646,7 @@
         if (entries.length) button.classList.add('has-note');
         button.setAttribute('role', 'gridcell');
         button.setAttribute('aria-selected', isSameDate(date, selectedDate) ? 'true' : 'false');
-        button.setAttribute('aria-label', buildDateAriaLabel(date, lunar, holiday, entries));
+        button.setAttribute('aria-label', buildDateAriaLabel(date, lunar, holiday, entries, data[key]?.sel));
         const preview = entries.length ? `<span class="todo-preview">${escapeHtml(entries[0].timeText || '未設定時段')} ${escapeHtml(entries[0].text || '')}</span>` : '';
         button.innerHTML = `<span class="solar-day">${date.getDate()}</span><span class="lunar-day">${escapeHtml(lunar.short)}</span>${holiday ? `<span class="holiday-name">${escapeHtml(holiday)}</span>` : ''}${preview}`;
         el.calendarGrid.appendChild(button);
@@ -385,9 +654,10 @@
       if (focusSelected) focusSelectedDateButton();
     }
 
-    function buildDateAriaLabel(date, lunar, holiday, entries) {
+    function buildDateAriaLabel(date, lunar, holiday, entries, sel) {
       const parts = [formatDateForSpeech(date), lunar.full];
       if (holiday) parts.push(holiday);
+      if (hasSelData(sel)) parts.push(`SEL，${formatSelForDisplay(sel)}`);
       if (entries.length) parts.push(entries.map(entry => `${entry.done ? '已完成' : '未完成'}，${entry.timeText || '未設定時段'}，${entry.text || '未填寫'}`).join('；'));
       else parts.push('無待辦事項');
       if (isSameDate(date, selectedDate)) parts.push('目前選取');
@@ -399,7 +669,8 @@
       selectedDate = startOfDay(date);
       if (updateMonth) { displayYear = selectedDate.getFullYear(); displayMonth = selectedDate.getMonth(); }
       el.jumpDate.value = dateKeyFromDate(selectedDate);
-      renderCalendar(focusCalendar); loadSelectedDate();
+      renderCalendar(focusCalendar);
+      loadSelectedDate();
       announce(`已選取${formatDateForSpeech(selectedDate)}`);
     }
 
@@ -407,13 +678,15 @@
       const key = dateKeyFromDate(selectedDate);
       const lunar = safeLunar(selectedDate);
       const holiday = getHolidayName(selectedDate, lunar);
-      el.selectedDateSummary.innerHTML = `<strong>${formatDateForSpeech(selectedDate)}</strong><span>${lunar.full}${holiday ? `｜${escapeHtml(holiday)}` : ''}</span>`;
+      el.selectedDateSummary.innerHTML = `<strong>${formatDateForSpeech(selectedDate)}</strong><span>${escapeHtml(lunar.full)}${holiday ? `｜${escapeHtml(holiday)}` : ''}</span>`;
       el.entryList.innerHTML = '';
       getEntriesByKey(key).forEach(entry => addEntry({ ...entry, focus:false }));
-      updateStatus('資料會自動儲存在這台電腦的瀏覽器中。');
+      updateEmptyState();
     }
 
     function addEntry({ id = createId(), timeText = '', text = '', done = false, focus = false } = {}) {
+      const empty = el.entryList.querySelector('.empty-state');
+      if (empty) empty.remove();
       const section = document.createElement('section');
       section.className = 'entry';
       section.dataset.entryId = id;
@@ -421,18 +694,26 @@
         <div class="entry-row">
           <div><label>時段</label><input type="text" data-entry-time value="${escapeAttr(timeText)}" placeholder="例如：09:00-10:00 國文作業"></div>
           <div><label>待辦事項</label><textarea data-entry-text placeholder="請輸入待辦事項內容。">${escapeHtml(text)}</textarea></div>
-          <label class="check-item" style="margin:0;"><input type="checkbox" data-entry-done ${done ? 'checked' : ''}><span class="check-text">完成</span></label>
+          <label class="check-item"><input type="checkbox" data-entry-done ${done ? 'checked' : ''}><span class="check-text">完成</span></label>
           <button type="button" class="danger" data-delete-entry>刪除</button>
         </div>`;
       el.entryList.appendChild(section);
-      if (focus) setTimeout(() => section.querySelector('[data-entry-text]').focus(), 30);
+      if (focus) setTimeout(() => section.querySelector('[data-entry-time]').focus(), 30);
+    }
+
+    function updateEmptyState() {
+      if (el.entryList.querySelector('.entry')) return;
+      const empty = document.createElement('p');
+      empty.className = 'empty-state';
+      empty.textContent = '這一天目前沒有待辦事項。';
+      el.entryList.appendChild(empty);
     }
 
     function handleEntryClick(event) {
       const del = event.target.closest('[data-delete-entry]');
       if (!del) return;
       const section = del.closest('.entry');
-      if (confirm('確定刪除此待辦事項嗎？')) { section.remove(); saveSelectedDate(); }
+      if (confirm('確定刪除此待辦事項嗎？')) { section.remove(); updateEmptyState(); saveSelectedDate(); }
     }
 
     function collectCurrentData() {
@@ -440,19 +721,30 @@
         id: section.dataset.entryId || createId(),
         timeText: section.querySelector('[data-entry-time]')?.value || '',
         text: section.querySelector('[data-entry-text]')?.value || '',
-        done: section.querySelector('[data-entry-done]')?.checked || false
+        done: section.querySelector('[data-entry-done]')?.checked || false,
+        updatedAt: new Date().toISOString()
       })).filter(entry => entry.timeText.trim() || entry.text.trim());
       return { entries, updatedAt:new Date().toISOString() };
     }
+
+    function getAllData() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+      catch { return {}; }
+    }
+
+    function saveAllData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
     function saveSelectedDate(show = true) {
       if (!el.entryList) return;
       const key = dateKeyFromDate(selectedDate);
       const data = getAllData();
       const current = collectCurrentData();
-      if (current.entries.length) data[key] = current; else delete data[key];
+      const existing = data[key] || {};
+      if (current.entries.length || hasSelData(existing.sel)) data[key] = { ...existing, entries:current.entries, updatedAt:new Date().toISOString() };
+      else delete data[key];
       saveAllData(data);
-      renderCalendar(); renderTodayPanel();
+      renderCalendar(false);
+      renderTodayPanel();
       if (show) updateStatus('已儲存。', true);
     }
 
@@ -461,8 +753,13 @@
     function clearSelectedDate() {
       const key = dateKeyFromDate(selectedDate);
       if (!confirm(`確定清除 ${key} 的所有紀錄嗎？`)) return;
-      const data = getAllData(); delete data[key]; saveAllData(data);
-      loadSelectedDate(); renderCalendar(); renderTodayPanel(); updateStatus('本日紀錄已清除。', true);
+      const data = getAllData();
+      delete data[key];
+      saveAllData(data);
+      loadSelectedDate();
+      renderCalendar();
+      renderTodayPanel();
+      updateStatus('本日紀錄已清除。', true);
     }
 
     function getEntriesByKey(key) { return getAllData()[key]?.entries || []; }
@@ -482,6 +779,11 @@
       return { start:timeToMinutes(match[1]), end:timeToMinutes(match[2]) };
     }
 
+    function timeToMinutes(value) {
+      const [hour, minute] = String(value).split(':').map(Number);
+      return (hour || 0) * 60 + (minute || 0);
+    }
+
     function handleCalendarKeydown(event) {
       const btn = event.target.closest('.day-button');
       if (!btn) return;
@@ -499,10 +801,27 @@
       }
     }
 
+    function buildWeekSummary(date) {
+      const data = getAllData();
+      const sunday = addDays(date, -date.getDay());
+      const weekNo = getWeekNumber(sunday);
+      const lines = [`第 ${weekNo} 週，${formatDateForSpeech(sunday)}到${formatDateForSpeech(addDays(sunday, 6))}`];
+      for (let i = 0; i < 7; i++) {
+        const day = addDays(sunday, i);
+        const key = dateKeyFromDate(day);
+        const dayRecord = data[key] || {};
+        const entries = dayRecord.entries || [];
+        const selText = hasSelData(dayRecord.sel) ? `SEL：${formatSelForDisplay(dayRecord.sel)}。` : '';
+        if (!entries.length) lines.push(`${formatDateForSpeech(day)}：${selText}無待辦事項`);
+        else lines.push(`${formatDateForSpeech(day)}：${selText}${entries.map(e => `${e.timeText || '未設定時段'}，${e.text || '未填寫'}${e.done ? '，已完成' : ''}`).join('；')}`);
+      }
+      return lines.join('。');
+    }
+
     function handleShortcuts(event) {
       const tag = document.activeElement?.tagName?.toLowerCase();
       const typing = ['input','textarea','select'].includes(tag);
-      if (event.altKey && ['1','2','3','4'].includes(event.key)) { event.preventDefault(); focusLayer(event.key); return; }
+      if (event.altKey && ['0','1','2','3','4'].includes(event.key)) { event.preventDefault(); focusLayer(event.key); return; }
       if (event.altKey && event.key === 'ArrowLeft') { event.preventDefault(); selectDate(addDays(selectedDate, -1), true, true); return; }
       if (event.altKey && event.key === 'ArrowRight') { event.preventDefault(); selectDate(addDays(selectedDate, 1), true, true); return; }
       if (event.altKey && event.key === ',') { event.preventDefault(); changeMonth(-1); return; }
@@ -519,72 +838,125 @@
     }
 
     function focusLayer(num) {
-      const layer = document.getElementById(`layer${num}`);
-      if (layer) { layer.focus(); layer.scrollIntoView({ block:'start', behavior:'smooth' }); announce(layer.querySelector('h2')?.textContent || `第 ${num} 層`); }
+      const target = document.getElementById(`layer${num}`);
+      if (!target) return;
+      target.focus();
+      target.scrollIntoView({ block:'start' });
+      announce(`已移到第 ${num} 層`);
     }
-    function goToday() { selectDate(new Date(), true, true); }
-    function changeMonth(delta) { displayMonth += delta; if (displayMonth < 0) { displayMonth = 11; displayYear--; } if (displayMonth > 11) { displayMonth = 0; displayYear++; } renderCalendar(true); announce(`${displayYear} 年 ${displayMonth + 1} 月`); }
-    function focusSelectedDateButton() { const btn = el.calendarGrid.querySelector(`[data-date="${dateKeyFromDate(selectedDate)}"]`); if (btn) btn.focus(); }
 
-    function buildWeekSummary(date) {
-      const start = addDays(date, -date.getDay());
-      const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
-      const calendarStart = addDays(monthStart, -monthStart.getDay());
-      const weekNo = Math.floor((start - calendarStart) / 604800000) + 1;
-      const data = getAllData();
-      const parts = [`第 ${weekNo} 週整週摘要`];
-      for (let i = 0; i < 7; i++) {
-        const d = addDays(start, i);
-        const entries = data[dateKeyFromDate(d)]?.entries || [];
-        const desc = entries.length ? entries.map(entry => `${entry.done ? '已完成' : '未完成'}，${entry.timeText || '未設定時段'}，${entry.text || '未填寫'}`).join('；') : '無待辦事項';
-        parts.push(`${formatDateForSpeech(d)}：${desc}`);
-      }
-      return parts.join('。');
+    function goToday() { selectDate(new Date(), true, true); }
+
+    function changeMonth(delta) {
+      displayMonth += delta;
+      if (displayMonth < 0) { displayMonth = 11; displayYear--; }
+      if (displayMonth > 11) { displayMonth = 0; displayYear++; }
+      selectedDate = new Date(displayYear, displayMonth, Math.min(selectedDate.getDate(), daysInMonth(displayYear, displayMonth)));
+      el.jumpDate.value = dateKeyFromDate(selectedDate);
+      renderCalendar(true);
+      loadSelectedDate();
+      announce(`${displayYear} 年 ${displayMonth + 1} 月`);
+    }
+
+    function focusSelectedDateButton() {
+      const btn = el.calendarGrid.querySelector(`[data-date="${dateKeyFromDate(selectedDate)}"]`);
+      if (btn) btn.focus();
     }
 
     function buildExportText() {
       saveSelectedDate(false);
       const key = dateKeyFromDate(selectedDate);
       const lunar = safeLunar(selectedDate);
-      const entries = getEntriesByKey(key);
-      let text = `通用日曆待辦規劃小麥麥\n========================================\n日期：${formatRocDate(selectedDate)}\n${lunar.full}\n最後更新：${new Date().toLocaleString('zh-TW', { hour12:false })}\n\n【待辦事項】\n`;
-      if (!entries.length) text += '無待辦事項\n';
-      entries.forEach((entry, index) => { text += `\n${index + 1}. ${entry.done ? '已完成' : '未完成'}｜${entry.timeText || '未設定時段'}\n${entry.text || '未填寫'}\n`; });
+      const holiday = getHolidayName(selectedDate, lunar);
+      const data = getAllData()[key] || { entries:[] };
+      let text = `通用日曆待辦規劃小麥麥\n========================================\n`;
+      text += `日期：${formatRocDateForSpeech(selectedDate)}\n${lunar.full}\n`;
+      if (holiday) text += `節日：${holiday}\n`;
+      text += `最後更新：${new Date().toLocaleString('zh-TW', { hour12:false })}\n\n【待辦事項】\n`;
+      if (!data.entries.length) text += '無規劃\n';
+      else data.entries.forEach((entry, index) => { text += `\n${index + 1}. ${entry.done ? '已完成' : '未完成'}｜${entry.timeText || '未設定時段'}\n${(entry.text || '').trim() || '未填寫'}\n`; });
+      text += `\n資料鍵：${key}\n`;
       return text;
     }
 
-    function downloadTextFile() { const key = dateKeyFromDate(selectedDate); downloadBlob(buildExportText(), `通用日曆待辦規劃_${key}.txt`, 'text/plain;charset=utf-8'); updateStatus('已下載 TXT。', true); }
-    function downloadPdf() { saveSelectedDate(false); window.print(); }
-    function downloadJsonFile() { saveSelectedDate(false); const key = dateKeyFromDate(new Date()); const backup = { app:'通用日曆待辦規劃小麥麥', version:1, exportedAt:new Date().toISOString(), data:getAllData() }; downloadBlob(JSON.stringify(backup, null, 2), `通用日曆待辦規劃備份_${key}.json`, 'application/json;charset=utf-8'); updateStatus('已匯出 JSON 備份檔。', true); }
-    async function handleJsonFileLoad(event) {
-      const file = event.target.files?.[0]; if (!file) return;
-      try {
-        const parsed = JSON.parse(await file.text());
-        const importedData = parsed?.data && typeof parsed.data === 'object' && !Array.isArray(parsed.data) ? parsed.data : parsed;
-        if (!importedData || typeof importedData !== 'object' || Array.isArray(importedData)) throw new Error('格式不正確');
-        if (!confirm('載入 JSON 檔會覆蓋目前這台電腦瀏覽器中的待辦資料，確定要載入嗎？')) return;
-        saveAllData(importedData); renderCalendar(); loadSelectedDate(); renderTodayPanel(); updateStatus('已載入 JSON 備份檔。', true);
-      } catch (error) { console.error(error); updateStatus('載入 JSON 失敗，請確認檔案格式是否正確。', true); }
+    function downloadTextFile() {
+      const key = dateKeyFromDate(selectedDate);
+      downloadBlob(buildExportText(), `通用日曆待辦規劃_${key}.txt`, 'text/plain;charset=utf-8');
+      updateStatus('已下載 TXT。', true);
     }
-    function openGmail() { const to = encodeURIComponent(el.mailTo.value.trim()); const subject = encodeURIComponent(`通用待辦檢核月曆小麥麥 - ${dateKeyFromDate(selectedDate)}`); const body = encodeURIComponent(buildExportText()); window.open(`https://mail.google.com/mail/?view=cm&fs=1${to ? `&to=${to}` : ''}&su=${subject}&body=${body}`, '_blank', 'noopener'); updateStatus('已開啟 Gmail 信件撰寫視窗。', true); }
-    function downloadIcsFile() { const ics = buildIcsContent(); const key = dateKeyFromDate(selectedDate); if (!ics) { updateStatus('這一天沒有待辦事項，無法產生 ICS。', true); return; } downloadBlob(ics, `通用日曆待辦規劃_${key}.ics`, 'text/calendar;charset=utf-8'); updateStatus('已下載 ICS 行事曆檔，可匯入 Google 日曆。', true); }
+
+    function downloadPdf() { saveSelectedDate(false); window.print(); }
+
+    function downloadJsonFile() {
+      saveSelectedDate(false);
+      const payload = { app:'通用日曆待辦規劃小麥麥', version:3, exportedAt:new Date().toISOString(), data:getAllData() };
+      const key = dateKeyFromDate(new Date());
+      downloadBlob(JSON.stringify(payload, null, 2), `通用日曆待辦規劃備份_${key}.json`, 'application/json;charset=utf-8');
+      updateStatus('已匯出 JSON 檔。', true);
+    }
+
+    function loadJsonFile(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result || '{}'));
+          const incoming = parsed.data && typeof parsed.data === 'object' ? parsed.data : parsed;
+          if (!incoming || typeof incoming !== 'object' || Array.isArray(incoming)) throw new Error('JSON 格式不正確');
+          const count = Object.keys(incoming).length;
+          if (!confirm(`將載入 ${count} 天的資料並覆蓋目前本機資料，確定嗎？`)) return;
+          saveAllData(incoming);
+          loadSelCheckin();
+          renderTodayPanel();
+          renderCalendar();
+          loadSelectedDate();
+          updateStatus('已載入 JSON 檔。', true);
+        } catch (error) {
+          updateStatus(`載入失敗：${error.message}`, true);
+        } finally {
+          el.jsonFileInput.value = '';
+        }
+      };
+      reader.readAsText(file, 'utf-8');
+    }
+
+    function openGmail() {
+      const key = dateKeyFromDate(selectedDate);
+      const to = encodeURIComponent(el.mailTo.value.trim());
+      const subject = encodeURIComponent(`通用日曆待辦規劃 - ${key}`);
+      const body = encodeURIComponent(buildExportText());
+      const url = `https://mail.google.com/mail/?view=cm&fs=1${to ? `&to=${to}` : ''}&su=${subject}&body=${body}`;
+      window.open(url, '_blank', 'noopener');
+      updateStatus('已開啟 Gmail 信件撰寫視窗。', true);
+    }
+
+    function downloadIcsFile() {
+      const key = dateKeyFromDate(selectedDate);
+      const ics = buildIcsContent();
+      if (!ics) { updateStatus('這一天沒有待辦事項，無法產生 ICS。', true); return; }
+      downloadBlob(ics, `通用日曆待辦規劃_${key}.ics`, 'text/calendar;charset=utf-8');
+      updateStatus('已下載 ICS 行事曆檔，可匯入 Google 日曆。', true);
+    }
 
     function buildIcsContent() {
       saveSelectedDate(false);
       const key = dateKeyFromDate(selectedDate);
-      const entries = getEntriesByKey(key).filter(entry => (entry.timeText || '').trim() || (entry.text || '').trim());
+      const entries = (getAllData()[key]?.entries || []).filter(entry => (entry.timeText || '').trim() || (entry.text || '').trim());
       if (!entries.length) return '';
-      const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Maimai//Universal Calendar Todo//ZH-TW','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:' + icsEscape('通用待辦檢核月曆小麥麥'),'X-WR-TIMEZONE:Asia/Taipei'];
+      const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Maimai//Universal Calendar Todo//ZH-TW','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:' + icsEscape('通用日曆待辦規劃小麥麥'),'X-WR-TIMEZONE:Asia/Taipei'];
       entries.forEach((entry, index) => {
-        const range = parseTimeRange(entry.timeText || '');
-        const title = ((entry.text || '').split(/\r?\n/)[0] || entry.timeText || '待辦事項').slice(0,80);
+        const slot = entry.timeText || '未設定時段';
+        const parsed = parseTimeRange(slot);
+        const title = ((entry.text || '').trim().split(/\n/)[0] || slot || '待辦事項').slice(0, 80);
+        const desc = `${slot}\n${(entry.text || '').trim() || '未填寫'}`;
         lines.push('BEGIN:VEVENT');
         lines.push('UID:' + icsEscape(`${key}-${entry.id || index}@maimai.local`));
         lines.push('DTSTAMP:' + formatUtcIcsDateTime(new Date()));
-        if (range) {
-          const startDateTime = combineDateAndMinutes(selectedDate, range.start);
-          let endDateTime = combineDateAndMinutes(selectedDate, range.end);
-          if (endDateTime <= startDateTime) endDateTime.setDate(endDateTime.getDate() + 1);
+        if (parsed) {
+          const startDateTime = combineDateAndMinutes(selectedDate, parsed.start);
+          let endDateTime = combineDateAndMinutes(selectedDate, parsed.end);
+          if (endDateTime <= startDateTime) endDateTime = addDaysWithTime(endDateTime, 1);
           lines.push('DTSTART;TZID=Asia/Taipei:' + formatLocalIcsDateTime(startDateTime));
           lines.push('DTEND;TZID=Asia/Taipei:' + formatLocalIcsDateTime(endDateTime));
         } else {
@@ -592,7 +964,7 @@
           lines.push('DTEND;VALUE=DATE:' + formatIcsDate(addDays(selectedDate, 1)));
         }
         lines.push('SUMMARY:' + icsEscape(title));
-        lines.push('DESCRIPTION:' + icsEscape(`${entry.timeText || '未設定時段'}\n${entry.text || '未填寫'}`));
+        lines.push('DESCRIPTION:' + icsEscape(desc));
         lines.push('STATUS:' + (entry.done ? 'COMPLETED' : 'CONFIRMED'));
         lines.push('END:VEVENT');
       });
@@ -600,55 +972,80 @@
       return lines.map(foldIcsLine).join('\r\n') + '\r\n';
     }
 
-    function downloadBlob(content, filename, type) { const blob = new Blob([content], { type }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = filename; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(link.href), 1000); }
-    function updateStatus(message, speak = false) { el.saveStatus.textContent = message; if (speak) announce(message); clearTimeout(updateStatus.timer); updateStatus.timer = setTimeout(() => { el.saveStatus.textContent = '資料會自動儲存在這台電腦的瀏覽器中。'; }, 3000); }
-    function announce(message) { el.live.textContent = ''; setTimeout(() => { el.live.textContent = message; }, 20); }
-    function setTheme(themeName) { document.body.dataset.theme = themeName; const names = { 'black-yellow':'黑底黃字', 'black-white':'黑底白字', 'yellow-black':'黃底黑字', 'morandi':'莫蘭迪紫色' }; announce(`已切換為${names[themeName] || '莫蘭迪紫色'}主題`); }
-    function openHelp() { el.helpModal.hidden = false; document.getElementById('closeHelpBtn').focus(); }
-    function closeHelp() { el.helpModal.hidden = true; document.getElementById('layer2').focus(); }
-
-    function intlLunar(date) {
-      try {
-        const parts = new Intl.DateTimeFormat('zh-Hant-TW-u-ca-chinese', { year:'numeric', month:'long', day:'numeric' }).formatToParts(date);
-        const monthRaw = parts.find(p => p.type === 'month')?.value || '';
-        const dayRaw = parts.find(p => p.type === 'day')?.value || '';
-        const yearName = parts.find(p => p.type === 'yearName')?.value || '';
-        const relatedYear = Number(parts.find(p => p.type === 'relatedYear')?.value || date.getFullYear());
-        const monthNum = monthNameToNumber(monthRaw.replace('閏','').replace('月',''));
-        const dayNum = chineseDayToNumber(dayRaw.replace('日',''));
-        if (!monthNum || !dayNum) return null;
-        const gz = yearName || gan[(relatedYear - 4) % 10] + zhi[(relatedYear - 4) % 12];
-        const fullDay = lunarDayNames[dayNum] || dayRaw;
-        const displayMonth = monthRaw.replace('月','');
-        return { year:relatedYear, month:monthNum, day:dayNum, isLeap:monthRaw.includes('閏'), short:monthNum === 1 && dayNum === 1 ? '春節' : fullDay, full:`農曆：${gz}${zodiac[(relatedYear - 4) % 12]}年 ${displayMonth}月${fullDay}` };
-      } catch { return null; }
+    function combineDateAndMinutes(date, minutes) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate(), Math.floor(minutes / 60), minutes % 60, 0);
     }
-    function safeLunar(date) { return intlLunar(date) || fallbackLunar(date); }
-    function monthNameToNumber(name) { const map = { '正':1, '一':1, '二':2, '三':3, '四':4, '五':5, '六':6, '七':7, '八':8, '九':9, '十':10, '十一':11, '冬':11, '十二':12, '臘':12 }; return map[name] || Number(name) || 0; }
-    function chineseDayToNumber(value) { const map = { '初一':1,'初二':2,'初三':3,'初四':4,'初五':5,'初六':6,'初七':7,'初八':8,'初九':9,'初十':10,'十一':11,'十二':12,'十三':13,'十四':14,'十五':15,'十六':16,'十七':17,'十八':18,'十九':19,'二十':20,'廿一':21,'廿二':22,'廿三':23,'廿四':24,'廿五':25,'廿六':26,'廿七':27,'廿八':28,'廿九':29,'三十':30 }; return map[value] || Number(value) || 0; }
-    function leapMonth(year) { return LUNAR_INFO[year - 1900] & 0xf; }
-    function leapDays(year) { return leapMonth(year) ? ((LUNAR_INFO[year - 1900] & 0x10000) ? 30 : 29) : 0; }
-    function monthDays(year, month) { return (LUNAR_INFO[year - 1900] & (0x10000 >> month)) ? 30 : 29; }
-    function lunarYearDays(year) { let sum = 348; for (let i = 0x8000; i > 0x8; i >>= 1) if (LUNAR_INFO[year - 1900] & i) sum += 1; return sum + leapDays(year); }
-    function fallbackLunar(date) { try { const base = new Date(1900,0,31); let offset = Math.floor((startOfDay(date) - base) / 86400000); let year = 1900; while (year < 2101 && offset >= lunarYearDays(year)) { offset -= lunarYearDays(year); year++; } const leap = leapMonth(year); let month = 1, isLeap = false; while (month <= 12) { const days = isLeap ? leapDays(year) : monthDays(year, month); if (offset < days) break; offset -= days; if (leap && month === leap && !isLeap) isLeap = true; else { if (isLeap) isLeap = false; month++; } } const day = offset + 1; const gz = gan[(year - 4) % 10] + zhi[(year - 4) % 12]; return { year, month, day, isLeap, short:lunarDayNames[day] || '', full:`農曆：${gz}${zodiac[(year - 4) % 12]}年 ${isLeap ? '閏' : ''}${lunarMonthNames[month]}月${lunarDayNames[day]}` }; } catch { return { full:'農曆未載入', short:'農曆' }; } }
-    function getHolidayName(date, lunar) { const md = `${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`; const fixed = { '01-01':'開國紀念日', '02-28':'和平紀念日', '04-04':'兒童節', '04-05':'清明節', '05-01':'勞動節', '10-10':'國慶日' }; const lunarFixed = { '1-1':'春節', '1-15':'元宵節', '5-5':'端午節', '7-7':'七夕', '8-15':'中秋節', '9-9':'重陽節' }; return fixed[md] || lunarFixed[`${lunar.month}-${lunar.day}`] || ''; }
+
+    function addDaysWithTime(date, days) { const next = new Date(date); next.setDate(next.getDate() + days); return next; }
+    function formatIcsDate(date) { return `${date.getFullYear()}${pad2(date.getMonth() + 1)}${pad2(date.getDate())}`; }
+    function formatLocalIcsDateTime(date) { return `${date.getFullYear()}${pad2(date.getMonth() + 1)}${pad2(date.getDate())}T${pad2(date.getHours())}${pad2(date.getMinutes())}00`; }
+    function formatUtcIcsDateTime(date) { return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z'); }
+    function icsEscape(value) { return String(value || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+    function foldIcsLine(line) { return String(line).replace(/(.{70})/g, '$1\r\n '); }
+
+    function downloadBlob(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    }
+
+    function openHelp() { el.helpModal.hidden = false; document.getElementById('closeHelpBtn').focus(); }
+    function closeHelp() { el.helpModal.hidden = true; document.getElementById('shortcutTitle').focus(); }
+
+    function safeLunar(date) {
+      const lunar = lunarFromIntl(date);
+      if (lunar) return lunar;
+      return { year:date.getFullYear(), month:0, day:0, isLeap:false, monthName:'', dayName:'', short:'農曆未載入', full:'農曆未載入' };
+    }
+
+    function lunarFromIntl(date) {
+      try {
+        if (typeof Intl === 'undefined' || !Intl.DateTimeFormat) return null;
+        const taipeiDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0));
+        const parts = new Intl.DateTimeFormat('zh-TW-u-ca-chinese', { year:'numeric', month:'long', day:'numeric', timeZone:'Asia/Taipei' }).formatToParts(taipeiDate);
+        const relatedYear = parts.find(p => p.type === 'relatedYear')?.value || String(date.getFullYear());
+        const yearName = parts.find(p => p.type === 'yearName')?.value || '';
+        const monthRaw = parts.find(p => p.type === 'month')?.value || '';
+        const dayNumber = Number(parts.find(p => p.type === 'day')?.value || '0');
+        if (!monthRaw || !dayNumber) return null;
+        const isLeap = monthRaw.includes('閏');
+        const normalizedMonth = monthRaw.replace('閏', '').replace('月', '');
+        const month = lunarMonthNumberMap[normalizedMonth] || 0;
+        const monthName = `${isLeap ? '閏' : ''}${normalizedMonth}月`;
+        const dayName = lunarDayNames[dayNumber] || `${dayNumber}日`;
+        const animal = yearName ? (zhiToZodiac[yearName.slice(-1)] || '') : '';
+        const full = `農曆：${yearName}${animal}年 ${monthName}${dayName}`;
+        const short = dayNumber === 1 ? `${monthName}${dayName}` : dayName;
+        return { year:Number(relatedYear), month, day:dayNumber, isLeap, monthName, dayName, short, full, yearName };
+      } catch {
+        return null;
+      }
+    }
+
+    function getHolidayName(date, lunar) {
+      const md = `${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+      const fixed = { '01-01':'開國紀念日', '02-28':'和平紀念日', '04-04':'兒童節', '04-05':'清明節', '05-01':'勞動節', '10-10':'國慶日' };
+      const lunarFixed = { '1-1':'春節', '1-15':'元宵節', '5-5':'端午節', '7-7':'七夕', '8-15':'中秋節', '9-9':'重陽節' };
+      return fixed[md] || lunarFixed[`${lunar.month}-${lunar.day}`] || '';
+    }
 
     function createId() { return `entry-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
     function startOfDay(date) { return new Date(date.getFullYear(), date.getMonth(), date.getDate()); }
     function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return startOfDay(d); }
-    function parseDateKey(key) { const [y,m,d] = key.split('-').map(Number); return new Date(y, m - 1, d); }
+    function parseDateKey(key) { const [y, m, d] = key.split('-').map(Number); return new Date(y, m - 1, d); }
     function pad2(n) { return String(n).padStart(2, '0'); }
     function dateKeyFromDate(date) { return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`; }
-    function isSameDate(a,b) { return dateKeyFromDate(a) === dateKeyFromDate(b); }
+    function isSameDate(a, b) { return dateKeyFromDate(a) === dateKeyFromDate(b); }
+    function daysInMonth(year, month) { return new Date(year, month + 1, 0).getDate(); }
     function formatDateForSpeech(date) { return date.toLocaleDateString('zh-TW', { year:'numeric', month:'long', day:'numeric', weekday:'long' }); }
-    function formatRocDate(date) { return `中華民國${date.getFullYear() - 1911}年${date.getMonth() + 1}月${date.getDate()}日${WEEKDAYS[date.getDay()]}`; }
-    function timeToMinutes(value) { const [h,m] = value.split(':').map(Number); return h * 60 + m; }
-    function combineDateAndMinutes(date, minutes) { return new Date(date.getFullYear(), date.getMonth(), date.getDate(), Math.floor(minutes / 60), minutes % 60, 0); }
-    function formatIcsDate(date) { return `${date.getFullYear()}${pad2(date.getMonth()+1)}${pad2(date.getDate())}`; }
-    function formatLocalIcsDateTime(date) { return `${formatIcsDate(date)}T${pad2(date.getHours())}${pad2(date.getMinutes())}${pad2(date.getSeconds())}`; }
-    function formatUtcIcsDateTime(date) { return `${date.getUTCFullYear()}${pad2(date.getUTCMonth()+1)}${pad2(date.getUTCDate())}T${pad2(date.getUTCHours())}${pad2(date.getUTCMinutes())}${pad2(date.getUTCSeconds())}Z`; }
-    function icsEscape(value) { return String(value ?? '').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n'); }
-    function foldIcsLine(line) { return String(line).replace(/(.{70})/g, '$1\r\n '); }
+    function formatRocDateForSpeech(date) { return `中華民國${date.getFullYear() - 1911}年${date.getMonth() + 1}月${date.getDate()}日${WEEKDAYS[date.getDay()]}`; }
+    function getWeekNumber(date) { const firstDay = new Date(date.getFullYear(), 0, 1); const diff = Math.floor((startOfDay(date) - firstDay) / 86400000); return Math.floor((diff + firstDay.getDay()) / 7) + 1; }
+    function updateStatus(message, speak = false) { el.saveStatus.textContent = message; if (speak) announce(message); clearTimeout(updateStatus.timer); updateStatus.timer = setTimeout(() => { el.saveStatus.textContent = '資料會自動儲存在這台電腦的瀏覽器中。'; }, 3000); }
     function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
     function escapeAttr(value) { return escapeHtml(value).replace(/`/g, '&#96;'); }
   </script>
